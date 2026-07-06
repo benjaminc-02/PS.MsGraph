@@ -24,12 +24,17 @@ function Get-MsGDirectoryObjectMemberOf {
             $errorMessage = '{0} : Unable to run command. Headers are empty.' -f $MyInvocation.MyCommand.Name
             throw $errorMessage
         }
+
+        $irmParams = @{
+            'ErrorAction' = 'Stop'
+            'Headers'     = $Headers
+        }
         # end Session Checks
     }
     PROCESS {
         # Retrieve directory object.
         try {
-            $directoryObject = Get-MsGDirectoryObject -Id $Id -Headers $Headers -ErrorAction 'Stop'
+            $directoryObject = Get-MsGDirectoryObject -Id $Id @irmParams
             if ([string]::IsNullOrEmpty($directoryObject)) {
                 $errorMessage = 'Directory object not found.'
                 throw $errorMessage
@@ -45,7 +50,7 @@ function Get-MsGDirectoryObjectMemberOf {
         # Retrieve group memberships of directory object.
         try {
             $graphEndpoint = 'directoryObjects/{0}/getMemberGroups' -f $directoryObject.id
-            $irmResponse = Invoke-MsGRequest -Method Post -Endpoint $graphEndpoint -Body @{'securityEnabledOnly' = $SecurityEnabledOnly } -Version 'v1.0' -Headers $Headers -ErrorAction 'Stop'
+            $irmResponse = Invoke-MsGRequest -Method Post -Endpoint $graphEndpoint -Body @{'securityEnabledOnly' = $SecurityEnabledOnly } -Version 'v1.0' @irmParams
         }
         catch {
             $errorMessage = Get-MsGErrorMessage $_
@@ -58,7 +63,7 @@ function Get-MsGDirectoryObjectMemberOf {
         foreach ($groupId in $irmResponse.value) {
             $groupObj = $null
             try {
-                $groupObj = Get-MsGGroup -ObjectId $groupId -Headers $Headers -ErrorAction 'Stop'
+                $groupObj = Get-MsGGroup -ObjectId $groupId @irmParams
                 Write-Output $groupObj
             }
             catch {

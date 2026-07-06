@@ -1,9 +1,9 @@
-function Get-MsGRoleDefinition {
-    [CmdletBinding(DefaultParameterSetName = 'Name')]
+function Get-MsGApplicationCertificate {
+    [CmdletBinding()]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,
-        [parameter(Mandatory = $true, ParameterSetName = 'ObjId', Position = 1)][string]$ObjectId,
-        [parameter(Mandatory = $true, ParameterSetName = 'All', Position = 2)][switch]$All,
+        [parameter(Mandatory = $true, ParameterSetName = 'AppId', Position = 1)][string]$AppId,
+        [parameter(Mandatory = $true, ParameterSetName = 'ObjId', Position = 2)][string]$ObjectId,
         [parameter(Mandatory = $false)][hashtable]$Headers,
         [parameter(Mandatory = $false)][string]$Jwt
     )
@@ -26,37 +26,33 @@ function Get-MsGRoleDefinition {
             throw $errorMessage
         }
         # end Session Checks
-
-        # Function Endpoint
-        $baseEndpoint = 'roleManagement/directory/roleDefinitions'
-        # end region
     }
     PROCESS {
+        # Retrieve Application from Entra ID
         try {
-            # Create Query Parameters
             switch ($PSCmdlet.ParameterSetName) {
                 "Name" {
-                    $filterQuery = "displayName eq '{0}'" -f $DisplayName
-                    $graphEndpoint = '{0}?$filter={1}' -f $baseEndpoint, $filterQuery
+                    $appEndpoint = "applications?`$filter=displayName eq '{0}'&`$select=displayName,appId,id,keyCredentials" -f $DisplayName
+                }
+                "AppId" {
+                    $appEndpoint = "applications?`$filter=appId eq '{0}'&`$select=displayName,appId,id,keyCredentials" -f $AppId
                 }
                 "ObjId" {
-                    $graphEndpoint = '{0}/{1}' -f $baseEndpoint, $ObjectId
-                }
-                "All" {
-                    $graphEndpoint = $baseEndpoint
+                    $appEndpoint = "applications/{0}?`$select=displayName,appId,id,keyCredentials" -f $DisplayName
                 }
             }
-            # end region
-
-            # Retrieve results.
-            $irmResponse = Invoke-MsGRequest -Method 'Get' -Endpoint $graphEndpoint -Version 'v1.0' -Headers $Headers -ErrorAction 'Stop'
-            Write-Output $irmResponse
-            # end region
+            $application = Invoke-MsGRequest -Method Get -Endpoint $appEndpoint -Headers $Headers -ErrorAction 'Stop'
+            if ([string]::IsNullOrEmpty($application)) {
+                $errorMessage = 'Application not found.'
+                throw $errorMessage
+            }
+            $application.keyCredentials | Sort-Object endDateTime | Write-Output
         }
         catch {
             $errorMessage = Get-MsGErrorMessage $_
-            $errorException = '{0} : Unable to retrieve role definitions from Entra ID. Error: {1}' -f $MyInvocation.MyCommand.Name, $errorMessage
+            $errorException = '{0} : Unable to retrieve application from Entra ID. Error: {1}' -f $MyInvocation.MyCommand.Name, $errorMessage
             throw $errorException
         }
+        # end region
     }
 }

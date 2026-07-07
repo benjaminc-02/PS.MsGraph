@@ -1,4 +1,4 @@
-function Get-MsGRoleAssignment {
+function Get-MsGDirectoryRoleAssignment {
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,
@@ -37,7 +37,7 @@ function Get-MsGRoleAssignment {
             "ObjId" { $params.Add('ObjectId', $ObjectId) }
         }
         try {
-            $roleDefinition = Get-MsGRoleDefinition @params
+            $roleDefinition = Get-MsGDirectoryRoleDefinition @params
             if ([string]::IsNullOrEmpty($roleDefinition)) {
                 $errorMessage = 'Role definition not found.'
                 throw $errorMessage

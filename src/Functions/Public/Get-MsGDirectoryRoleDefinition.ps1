@@ -1,12 +1,9 @@
-function Get-MsGServicePrincipal {
+function Get-MsGDirectoryRoleDefinition {
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,
-        [parameter(Mandatory = $true, ParameterSetName = 'AppId', Position = 1)][string]$AppId,
-        [parameter(Mandatory = $true, ParameterSetName = 'ObjId', Position = 2)][string]$ObjectId,
-        [parameter(Mandatory = $true, ParameterSetName = 'Filter', Position = 3)][string]$Filter,
-        [parameter(Mandatory = $false, ParameterSetName = 'Filter', Position = 4)][switch]$AdvancedQuery,
-        [parameter(Mandatory = $true, ParameterSetName = 'All', Position = 5)][switch]$All,
+        [parameter(Mandatory = $true, ParameterSetName = 'ObjId', Position = 1)][string]$ObjectId,
+        [parameter(Mandatory = $true, ParameterSetName = 'All', Position = 2)][switch]$All,
         [parameter(Mandatory = $false)][hashtable]$Headers,
         [parameter(Mandatory = $false)][string]$Jwt
     )
@@ -31,7 +28,7 @@ function Get-MsGServicePrincipal {
         # end Session Checks
 
         # Function Endpoint
-        $baseEndpoint = 'servicePrincipals'
+        $baseEndpoint = 'roleManagement/directory/roleDefinitions'
         # end region
     }
     PROCESS {
@@ -42,18 +39,8 @@ function Get-MsGServicePrincipal {
                     $filterQuery = "displayName eq '{0}'" -f $DisplayName
                     $graphEndpoint = '{0}?$filter={1}' -f $baseEndpoint, $filterQuery
                 }
-                "AppId" {
-                    $graphEndpoint = "{0}(appId='{1}')" -f $baseEndpoint, $AppId
-                }
                 "ObjId" {
                     $graphEndpoint = '{0}/{1}' -f $baseEndpoint, $ObjectId
-                }
-                "Filter" {
-                    $graphEndpoint = '{0}?$filter={1}' -f $baseEndpoint, $Filter
-                    if ($AdvancedQuery) {
-                        $Headers.Add('consistencyLevel', 'eventual')
-                        $graphEndpoint = '{0}&$count=true' -f $graphEndpoint
-                    }
                 }
                 "All" {
                     $graphEndpoint = $baseEndpoint
@@ -68,7 +55,7 @@ function Get-MsGServicePrincipal {
         }
         catch {
             $errorMessage = Get-MsGErrorMessage $_
-            $errorException = '{0} : Unable to retrieve {1} from Entra ID. Error: {2}' -f $MyInvocation.MyCommand.Name, $baseEndpoint, $errorMessage
+            $errorException = '{0} : Unable to retrieve role definitions from Entra ID. Error: {1}' -f $MyInvocation.MyCommand.Name, $errorMessage
             throw $errorException
         }
     }

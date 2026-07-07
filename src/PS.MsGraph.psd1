@@ -106,6 +106,8 @@
         'Remove-MsGApplicationAPIPermission',
         'Remove-MsGApplicationCertificate',
         'Remove-MsGApplicationClientSecret',
+        'Remove-MsGApplicationFederatedCredential',
+        'Remove-MsGApplicationOwner',
         'Remove-MsGDirectoryRoleAssignment',
         'Remove-MsGGroupMember',
         'Remove-MsGGroupOwner',

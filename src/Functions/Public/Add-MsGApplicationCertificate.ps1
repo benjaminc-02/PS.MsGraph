@@ -1,5 +1,5 @@
 function Add-MsGApplicationCertificate {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name-Path', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [parameter(Mandatory = $true, ParameterSetName = 'Name-Thumbprint', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
@@ -112,17 +112,19 @@ function Add-MsGApplicationCertificate {
         # end region
 
         # Update application
-        try {
-            $endpoint = 'applications/{0}' -f $application.id
-            $body = @{
-                'keyCredentials' = $updatedKeyCredentials
+        if ($PSCmdlet.ShouldProcess($application.displayName, 'Add Application Certificate')) {
+            try {
+                $endpoint = 'applications/{0}' -f $application.id
+                $body = @{
+                    'keyCredentials' = $updatedKeyCredentials
+                }
+                Invoke-MsGRequest -Method Patch -Endpoint $endpoint -Body $body -Headers $Headers -ErrorAction 'Stop' > $null
             }
-            Invoke-MsGRequest -Method Patch -Endpoint $endpoint -Body $body -Headers $Headers -ErrorAction 'Stop' > $null
-        }
-        catch {
-            $errorMessage = Get-MsGErrorMessage $_
-            $errorException = '{0} : Unable to upload certificate to the application in Entra ID. Error: {1}' -f $MyInvocation.MyCommand.Name, $errorMessage
-            throw $errorException
+            catch {
+                $errorMessage = Get-MsGErrorMessage $_
+                $errorException = '{0} : Unable to upload certificate to the application in Entra ID. Error: {1}' -f $MyInvocation.MyCommand.Name, $errorMessage
+                throw $errorException
+            }
         }
         # end region
     }

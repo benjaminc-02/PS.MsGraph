@@ -1,5 +1,5 @@
 function Invoke-MsGRequest {
-    [CmdletBinding(SupportsShouldProcess)]
+    [CmdletBinding()]
     param(
         [parameter(Mandatory = $true, Position = 0)][ValidateSet('Default', 'Delete', 'Get', 'Head', 'Merge', 'Options', 'Patch', 'Post', 'Put', 'Trace')][string]$Method,
         [parameter(Mandatory = $true, Position = 1)][Alias('Uri')][string]$Endpoint,
@@ -47,53 +47,51 @@ function Invoke-MsGRequest {
         }
 
         # Invoke Rest Method
-        if ($PSCmdlet.ShouldProcess($Endpoint, 'Invoke Graph Request')) {
-            try {
-                $irmResponse = Invoke-RestMethod @bodyParams -Uri $graphUri
-            }
-            catch {
-                $errorMessage = Get-MsGErrorMessage $_
-                $errorException = '{0} : Unable to invoke the {1} method against the {2} endpoint. Error: {3}' -f $MyInvocation.MyCommand.Name, $Method, $Endpoint, $errorMessage
-                throw $errorException
-            }
+        try {
+            $irmResponse = Invoke-RestMethod @bodyParams -Uri $graphUri
+        }
+        catch {
+            $errorMessage = Get-MsGErrorMessage $_
+            $errorException = '{0} : Unable to invoke the {1} method against the {2} endpoint. Error: {3}' -f $MyInvocation.MyCommand.Name, $Method, $Endpoint, $errorMessage
+            throw $errorException
+        }
 
-            if ($Method -eq 'Get') {
-                # Determine if this is an entity.
-                if ($irmResponse.'@odata.context'.Split('/')[-1] -ne '$entity') {
-                    $totalResponse = New-Object -TypeName System.Collections.Generic.List[psobject]
-                    $continue = $true
-                    while ($continue) {
-                        $irmResponse.value | ForEach-Object { $totalResponse.Add($_) }
-                        $nextLink = $irmResponse.'@odata.nextLink'
-                        if ([string]::IsNullOrEmpty($nextLink)) {
+        if ($Method -eq 'Get') {
+            # Determine if this is an entity.
+            if ($irmResponse.'@odata.context'.Split('/')[-1] -ne '$entity') {
+                $totalResponse = New-Object -TypeName System.Collections.Generic.List[psobject]
+                $continue = $true
+                while ($continue) {
+                    $irmResponse.value | ForEach-Object { $totalResponse.Add($_) }
+                    $nextLink = $irmResponse.'@odata.nextLink'
+                    if ([string]::IsNullOrEmpty($nextLink)) {
+                        $continue = $false
+                    }
+                    else {
+                        Write-Verbose $nextLink
+                        try {
+                            $irmResponse = Invoke-RestMethod @bodyParams -Uri $nextLink
+                        }
+                        catch {
+                            $warningMessage = 'Unable to retrieve next link for requested endpoint. Outputting current retrieved responses.'
+                            Write-Warning $warningMessage
                             $continue = $false
                         }
-                        else {
-                            Write-Verbose $nextLink
-                            try {
-                                $irmResponse = Invoke-RestMethod @bodyParams -Uri $nextLink
-                            }
-                            catch {
-                                $warningMessage = 'Unable to retrieve next link for requested endpoint. Outputting current retrieved responses.'
-                                Write-Warning $warningMessage
-                                $continue = $false
-                            }
-                            $continue = $true
-                        }
+                        $continue = $true
                     }
+                }
 
-                    # No more $nextLink. Response can be outputted.
-                    Write-Output $totalResponse
-                }
-                else {
-                    # No other entities. Response can be outputted.
-                    Write-Output $irmResponse
-                }
+                # No more $nextLink. Response can be outputted.
+                Write-Output $totalResponse
             }
             else {
-                # Not a Get request. Response can be outputted.
+                # No other entities. Response can be outputted.
                 Write-Output $irmResponse
             }
+        }
+        else {
+            # Not a Get request. Response can be outputted.
+            Write-Output $irmResponse
         }
     }
 }

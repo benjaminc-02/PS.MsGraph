@@ -1,5 +1,5 @@
 function Add-MsGApplicationAPIPermission {
-    [CmdletBinding(DefaultParameterSetName = 'Name')]
+    [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,
         [parameter(Mandatory = $true, ParameterSetName = 'AppId', Position = 1)][string]$AppId,

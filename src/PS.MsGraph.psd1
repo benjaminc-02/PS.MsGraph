@@ -70,11 +70,23 @@
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = @(
+        'Add-MsGApplicationAPIPermission',
+        'Add-MsGApplicationCertificate',
+        'Add-MsGApplicationFederatedCredential',
+        'Add-MsGApplicationOwner',
+        'Add-MsGDirectoryRoleAssignment',
+        'Add-MsGGroupMember',
+        'Add-MsGGroupOwner',
+        'Add-MsGServicePrincipalAPIPermission',
+        'Add-MsGServicePrincipalOwner',
         'Connect-MsGraph',
         'Enable-MsGPIMRoleAssignment',
         'Get-MsGAccessToken',
         'Get-MsGAdministrativeUnit',
         'Get-MsGApplication',
+        'Get-MsGApplicationAPIPermission',
+        'Get-MsGApplicationCertificate',
+        'Get-MsGApplicationClientSecret',
         'Get-MsGApplicationFederatedCredential',
         'Get-MsGApplicationOwner',
         'Get-MsGDirectoryObject',
@@ -83,10 +95,23 @@
         'Get-MsGDirectoryRoleDefinition',
         'Get-MsGGroup',
         'Get-MsGGroupMember',
+        'Get-MsGGroupOwner',
         'Get-MsGServicePrincipal',
+        'Get-MsGServicePrincipalAPIPermission',
+        'Get-MsGServicePrincipalOwner',
         'Get-MsGUser',
         'Get-MsGUserAuthMethod',
-        'Invoke-MsGRequest'
+        'Invoke-MsGRequest',
+        'New-MsGApplicationClientSecret',
+        'Remove-MsGApplicationAPIPermission',
+        'Remove-MsGApplicationCertificate',
+        'Remove-MsGApplicationClientSecret',
+        'Remove-MsGDirectoryRoleAssignment',
+        'Remove-MsGGroupMember',
+        'Remove-MsGGroupOwner',
+        'Remove-MsGServicePrincipalAPIPermission',
+        'Remove-MsGServicePrincipalOwner',
+        'Reset-MsGUserAuthMethod'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.

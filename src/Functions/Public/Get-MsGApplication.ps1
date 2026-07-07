@@ -43,7 +43,7 @@ function Get-MsGApplication {
                     $graphEndpoint = '{0}?$filter={1}' -f $baseEndpoint, $filterQuery
                 }
                 "AppId" {
-                    $graphEndpoint = '{0}(appId={1})' -f $baseEndpoint, $AppId
+                    $graphEndpoint = "{0}(appId='{1}')" -f $baseEndpoint, $AppId
                 }
                 "ObjId" {
                     $graphEndpoint = '{0}/{1}' -f $baseEndpoint, $ObjectId

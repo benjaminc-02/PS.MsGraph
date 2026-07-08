@@ -5,6 +5,8 @@
         'Warning'
     )
     ExcludeRules = @(
-        'PSUseToExportFieldsInManifest'
+        'PSUseToExportFieldsInManifest',
+        'PSReviewUnusedParameter',
+        'PSUseProcessBlockForPipelineCommand'
     )
 }

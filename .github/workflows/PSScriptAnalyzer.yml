@@ -1,4 +1,4 @@
-name: Run PSPSScriptAnalyzer on PowerShell Scripts
+name: Invoke-Linting
 
 on:
   pull_request:

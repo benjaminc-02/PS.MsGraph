@@ -9,7 +9,7 @@
 @{
 
     # Script module or binary module file associated with this manifest.
-    RootModule        = '.\PS.MsGraph.psm1'
+    RootModule        = 'PS.MsGraph.psm1'
 
     # Version number of this module.
     ModuleVersion     = '1.0.0'
@@ -24,16 +24,16 @@
     Author            = 'Benjamin Cohn'
 
     # Company or vendor of this module
-    CompanyName       = 'N/A'
+    CompanyName       = 'Benjamin Cohn'
 
     # Copyright statement for this module
-    Copyright         = '2026 (c) Benjamin Cohn. All rights reserved.'
+    Copyright         = '(c) Benjamin Cohn. All rights reserved.'
 
     # Description of the functionality provided by this module
     Description       = 'This module contains commands relating to the Microsoft Graph REST API.'
 
     # Minimum version of the PowerShell engine required by this module
-    # PowerShellVersion = ''
+    PowerShellVersion = '5.1'
 
     # Name of the PowerShell host required by this module
     # PowerShellHostName = ''
@@ -133,51 +133,6 @@
 
     # List of all files packaged with this module
     FileList          = @(
-        'Functions\Private\Get-MsGErrorMessage.ps1',
-        'Functions\Public\Add-MsGApplicationAPIPermission.ps1',
-        'Functions\Public\Add-MsGApplicationCertificate.ps1',
-        'Functions\Public\Add-MsGApplicationFederatedCredential.ps1',
-        'Functions\Public\Add-MsGApplicationOwner.ps1',
-        'Functions\Public\Add-MsGDirectoryRoleAssignment.ps1',
-        'Functions\Public\Add-MsGGroupMember.ps1',
-        'Functions\Public\Add-MsGGroupOwner.ps1',
-        'Functions\Public\Add-MsGServicePrincipalAPIPermission.ps1',
-        'Functions\Public\Add-MsGServicePrincipalOwner.ps1',
-        'Functions\Public\Connect-MsGraph.ps1',
-        'Functions\Public\Enable-MsGPIMRoleAssignment.ps1',
-        'Functions\Public\Get-MsGAccessToken.ps1',
-        'Functions\Public\Get-MsGAdministrativeUnit.ps1',
-        'Functions\Public\Get-MsGApplication.ps1',
-        'Functions\Public\Get-MsGApplicationAPIPermission.ps1',
-        'Functions\Public\Get-MsGApplicationCertificate.ps1',
-        'Functions\Public\Get-MsGApplicationClientSecret.ps1',
-        'Functions\Public\Get-MsGApplicationFederatedCredential.ps1',
-        'Functions\Public\Get-MsGApplicationOwner.ps1',
-        'Functions\Public\Get-MsGDirectoryObject.ps1',
-        'Functions\Public\Get-MsGDirectoryObjectMemberOf.ps1',
-        'Functions\Public\Get-MsGDirectoryRoleAssignment.ps1',
-        'Functions\Public\Get-MsGDirectoryRoleDefinition.ps1',
-        'Functions\Public\Get-MsGGroup.ps1',
-        'Functions\Public\Get-MsGGroupMember.ps1',
-        'Functions\Public\Get-MsGGroupOwner.ps1',
-        'Functions\Public\Get-MsGServicePrincipal.ps1',
-        'Functions\Public\Get-MsGServicePrincipalAPIPermission.ps1',
-        'Functions\Public\Get-MsGServicePrincipalOwner.ps1',
-        'Functions\Public\Get-MsGUser.ps1',
-        'Functions\Public\Get-MsGUserAuthMethod.ps1',
-        'Functions\Public\Invoke-MsGRequest.ps1',
-        'Functions\Public\New-MsGApplicationClientSecret.ps1',
-        'Functions\Public\Remove-MsGApplicationAPIPermission.ps1',
-        'Functions\Public\Remove-MsGApplicationCertificate.ps1',
-        'Functions\Public\Remove-MsGApplicationClientSecret.ps1',
-        'Functions\Public\Remove-MsGApplicationFederatedCredential.ps1',
-        'Functions\Public\Remove-MsGApplicationOwner.ps1',
-        'Functions\Public\Remove-MsGDirectoryRoleAssignment.ps1',
-        'Functions\Public\Remove-MsGGroupMember.ps1',
-        'Functions\Public\Remove-MsGGroupOwner.ps1',
-        'Functions\Public\Remove-MsGServicePrincipalAPIPermission.ps1',
-        'Functions\Public\Remove-MsGServicePrincipalOwner.ps1',
-        'Functions\Public\Reset-MsGUserAuthMethod.ps1',
         'PS.MsGraph.psd1',
         'PS.MsGraph.psm1'
     )
@@ -188,17 +143,13 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags                       = @(
-                'MsGraph',
-                'Graph',
-                'EntraID'
-            )
+            Tags       = @('PSEdition_Desktop', 'PSEdition_Core', 'Windows', 'Linux', 'MacOS', 'Graph', 'EntraID', 'unofficial')
 
             # A URL to the license for this module.
-            LicenseUri                 = 'https://github.com/benjaminc-02/PS.MsGraph/blob/main/LICENSE'
+            LicenseUri = 'https://github.com/benjaminc-02/PS.MsGraph/blob/main/LICENSE'
 
             # A URL to the main website for this project.
-            ProjectUri                 = 'https://github.com/benjaminc-02/PS.MsGraph/tree/main/src'
+            ProjectUri = 'https://github.com/benjaminc-02/PS.MsGraph/tree/main/src'
 
             # A URL to an icon representing this module.
             # IconUri = ''
@@ -213,7 +164,7 @@
             # RequireLicenseAcceptance = $false
 
             # External dependent modules of this module
-            ExternalModuleDependencies = @('MSAL.PS')
+            # ExternalModuleDependencies = @('MSAL.PS')
 
         } # End of PSData hashtable
 

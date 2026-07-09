@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  pull_request:
+    paths:
+      - "./src"
+  workflow_dispatch:
+
+jobs:
+  test-module:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Modules
+        shell: pwsh
+        run: |
+          Install-Module -Name PSScriptAnalyzer -Scope CurrentUser -Force
+
+      - name: Test-ModuleManifest
+        shell: pwsh
+        run: |
+          Test-ModuleManifest -Path ./src/PS.MsGraph.psd1
+
+      - name: Invoke-ScriptAnalyzer
+        shell: pwsh
+        run: |
+          Invoke-ScriptAnalyzer -Path ./src/ -Settings ./PSScriptAnalyzerSettings.psd1 -Recurse -EnableExit

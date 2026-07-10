@@ -1,4 +1,4 @@
-function Get-MsGApplicationClientSecret {
+function Get-MsGApplicationPassword {
     [CmdletBinding()]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

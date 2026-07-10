@@ -27,7 +27,7 @@ function Connect-MsGraph {
         [string[]]$Scopes = ('User.Read'),
 
         [parameter(Mandatory = $false)][string]$ResourceUrl = 'https://graph.microsoft.com',
-        [parameter(Mandatory = $false)][string]$TenantId = '4de45879-f7de-4a82-8331-0c27309152e6',
+        [parameter(Mandatory = $true)][string]$TenantId,
         [parameter(Mandatory = $false)][switch]$AsHeaders
     )
     BEGIN {

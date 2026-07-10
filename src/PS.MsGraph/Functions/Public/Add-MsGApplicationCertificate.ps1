@@ -63,7 +63,7 @@ function Add-MsGApplicationCertificate {
                     $appEndpoint = "applications?`$filter=appId eq '{0}'&`$select=displayName,appId,id,keyCredentials" -f $AppId
                 }
                 "ObjId-*" {
-                    $appEndpoint = "applications/{0}?`$select=displayName,appId,id,keyCredentials" -f $DisplayName
+                    $appEndpoint = "applications/{0}?`$select=displayName,appId,id,keyCredentials" -f $ObjectId
                 }
             }
             $application = Invoke-MsGRequest -Method Get -Endpoint $appEndpoint -Headers $Headers -ErrorAction 'Stop'

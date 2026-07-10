@@ -1,4 +1,34 @@
 function Add-MsGApplicationAPIPermission {
+    <#
+    .SYNOPSIS
+    Adds specified API permission to application.
+    .DESCRIPTION
+    This function adds specified API permissions to an app registration. Both application and delegated permissions can be assigned for any resource application.
+    .PARAMETER DisplayName
+    Display Name of the app registration.
+    .PARAMETER AppId
+    App/Client Id of the app registration.
+    .PARAMETER ObjectId
+    Object Id of the app registration.
+    .PARAMETER Permission
+    List of permissions to add to the app registration.
+    .PARAMETER Type
+    Type of permissions to add to the app registration.
+    .PARAMETER AdminConsent
+    Specifies whether admin consent is provided to the permissions.
+    .PARAMETER ResourceAppId
+    App/Client Id of the resource application that the permissions are assigned from.
+    .PARAMETER Force
+    Forces the addition without any prompts.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Add-MsGApplicationAPIPermission -DisplayName TestApp-01 -Permission User.Read.All -Type Application -AdminConsent -Force
+
+    This adds the User.Read.All Application API Permission for Microsoft Graph to the TestApp-01 app registration, allowing it to read user data in the tenant.
+    #>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

@@ -84,7 +84,7 @@ function Get-MsGServicePrincipalAPIPermission {
                 $permissionInfo = $resourceScopeTable[$permissionName]
 
                 try {
-                    $customPermission = New-Object -TypeName 'PS_MsGraph_Application_APIPermission' -ArgumentList ($permissionInfo.adminConsentDescription, $permissionInfo.id, $permissionInfo.value, $resourceApp.appId, $resourceApp.displayName, 'Delegated')
+                    $customPermission = New-Object -TypeName 'PS_MsGraph_Application_APIPermission' -ArgumentList ($permissionInfo.id, $permissionInfo.adminConsentDescription, $delegatedPermission.id, $permissionInfo.value, $resourceApp.appId, $resourceApp.displayName, 'Delegated')
                     $apiPermissions.Add($customPermission)
                 }
                 catch {
@@ -113,12 +113,13 @@ function Get-MsGServicePrincipalAPIPermission {
             }
             $resourceRoleTable = $resourceApp.appRoles | Group-Object id -AsHashTable -AsString
 
-            foreach ($permissionId in $applicationRsApp.Group.appRoleId) {
+            foreach ($permission in $applicationRsApp.Group) {
+                $permissionId = $permission.appRoleId
                 $permissionInfo = $null
                 $permissionInfo = $resourceRoleTable[$permissionId]
 
                 try {
-                    $customPermission = New-Object -TypeName 'PS_MsGraph_Application_APIPermission' -ArgumentList ($permissionInfo.description, $permissionInfo.id, $permissionInfo.value, $resourceApp.appId, $resourceApp.displayName, 'Application')
+                    $customPermission = New-Object -TypeName 'PS_MsGraph_Application_APIPermission' -ArgumentList ($permissionInfo.id, $permissionInfo.description, $permission.id, $permissionInfo.value, $resourceApp.appId, $resourceApp.displayName, 'Application')
                     $apiPermissions.Add($customPermission)
                 }
                 catch {

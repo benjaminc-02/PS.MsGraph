@@ -1,5 +1,8 @@
 # Contains the API Permissions that are tied to the application.
 class PS_MsGraph_Application_APIPermission {
+    # The App Role Id of the API Permission.
+    [string]$AppRoleId
+
     # The Description of the API Permission.
     [string]$Description
 
@@ -20,7 +23,8 @@ class PS_MsGraph_Application_APIPermission {
 
     # Overloads
     PS_MsGraph_Application_APIPermission() {}
-    PS_MsGraph_Application_APIPermission($Description, $Id, $Name, $ResourceAppId, $ResourceAppName, $Type) {
+    PS_MsGraph_Application_APIPermission($AppRoleId, $Description, $Id, $Name, $ResourceAppId, $ResourceAppName, $Type) {
+        $this.AppRoleId = $AppRoleId
         $this.Description = $Description
         $this.Id = $Id
         $this.Name = $Name

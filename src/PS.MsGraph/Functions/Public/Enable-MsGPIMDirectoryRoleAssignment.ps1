@@ -1,4 +1,4 @@
-function Enable-MsGPIMRoleAssignment {
+function Enable-MsGPIMDirectoryRoleAssignment {
     [CmdletBinding()]
     [Alias('epim')]
     param(

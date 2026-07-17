@@ -80,7 +80,7 @@
         'Add-MsGServicePrincipalAPIPermission',
         'Add-MsGServicePrincipalOwner',
         'Connect-MsGraph',
-        'Enable-MsGPIMRoleAssignment',
+        'Enable-MsGPIMDirectoryRoleAssignment',
         'Get-MsGAccessToken',
         'Get-MsGAdministrativeUnit',
         'Get-MsGApplication',
@@ -113,6 +113,7 @@
         'Remove-MsGGroupOwner',
         'Remove-MsGServicePrincipalAPIPermission',
         'Remove-MsGServicePrincipalOwner',
+        'Remove-MsGUserAuthMethod',
         'Reset-MsGUserAuthMethod',
         'Set-MsGUserPassword'
     )

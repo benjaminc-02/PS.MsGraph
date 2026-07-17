@@ -3,6 +3,7 @@ function Get-MsGDirectoryRoleAssignment {
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,
         [parameter(Mandatory = $true, ParameterSetName = 'ObjId', Position = 1)][string]$ObjectId,
+        [parameter(Mandatory = $false, Position = 2)][string]$DirectoryScopeId = '/',
         [parameter(Mandatory = $false)][hashtable]$Headers,
         [parameter(Mandatory = $false)][string]$Jwt
     )
@@ -52,7 +53,7 @@ function Get-MsGDirectoryRoleAssignment {
 
         # Retrieve role assignments
         try {
-            $filterString = "roleDefinitionId eq '{0}'" -f $roleDefinition.id
+            $filterString = "roleDefinitionId eq '{0}' AND directoryScopeId eq '{1}'" -f $roleDefinition.id, $DirectoryScopeId
             $graphEndpoint = 'roleManagement/directory/roleAssignments?$filter={0}&$expand=principal' -f $filterString
             $irmResponse = Invoke-MsGRequest -Method Get -Endpoint $graphEndpoint -Version 'v1.0' -Headers $Headers -ErrorAction 'Stop'
 
@@ -63,6 +64,7 @@ function Get-MsGDirectoryRoleAssignment {
                 $principal | Add-Member -MemberType NoteProperty -Name 'directoryScopeId' -Value $principalAssignment.directoryScopeId -Force
                 $principal | Add-Member -MemberType NoteProperty -Name 'roleDefinitionId' -Value $principalAssignment.roleDefinitionId -Force
                 $principal | Add-Member -MemberType NoteProperty -Name 'roleDefinitionName' -Value $roleDefinition.displayName -Force
+                $principal | Add-Member -MemberType NoteProperty -Name 'roleAssignmentId' -Value $principalAssignment.id -Force
                 Write-Output $principal
             }
         }

@@ -7,6 +7,7 @@ function Remove-MsGDirectoryRoleAssignment {
         [parameter(Mandatory = $false, Position = 3)][string[]]$UserPrincipalName,
         [parameter(Mandatory = $false, Position = 4)][string[]]$GroupName,
         [parameter(Mandatory = $false, Position = 5)][string[]]$DirectoryObjectId,
+        [parameter(Mandatory = $false)][switch]$Force,
         [parameter(Mandatory = $false)][hashtable]$Headers,
         [parameter(Mandatory = $false)][string]$Jwt
     )

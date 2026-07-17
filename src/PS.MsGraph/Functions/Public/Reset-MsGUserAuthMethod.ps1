@@ -2,6 +2,7 @@ function Reset-MsGUserAuthMethod {
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][Alias('UserId')][string]$UserPrincipalName,
+        [parameter(Mandatory = $false, Position = 1)][switch]$Force,
         [parameter(Mandatory = $false)][hashtable]$Headers,
         [parameter(Mandatory = $false)][string]$Jwt
     )

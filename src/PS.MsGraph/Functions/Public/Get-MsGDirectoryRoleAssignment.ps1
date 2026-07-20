@@ -1,4 +1,20 @@
 function Get-MsGDirectoryRoleAssignment {
+    <#
+    .SYNOPSIS
+    Retrieves principals assigned to the role definition specified.
+    .DESCRIPTION
+    This function retrieves principals assigned to the role definition specified.
+    .PARAMETER DisplayName
+    DisplayName of the role definition.
+    .PARAMETER ObjectId
+    ObjectId of the role definition.
+    .PARAMETER DirectoryScopeId
+    Scope of the role definition.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

@@ -1,4 +1,18 @@
 function Get-MsGUserAuthMethod {
+    <#
+    .SYNOPSIS
+    Retrieves the authentication methods of a given user.
+    .DESCRIPTION
+    This function retrieves the authentication methods of a given user.
+    .PARAMETER UserPrincipalName
+    UserPrincipalName or ObjectId of the user.
+    .PARAMETER AuthMethod
+    Auth method type that should be retrieved off the user.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding()]
     param(
         [parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]

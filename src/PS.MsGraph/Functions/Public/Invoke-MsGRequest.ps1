@@ -1,4 +1,22 @@
 function Invoke-MsGRequest {
+    <#
+    .SYNOPSIS
+    Issues REST API requests to the Graph API.
+    .DESCRIPTION
+    This function issues REST API requests to the Microsoft Graph API using the specified method and endpoint.
+    .PARAMETER Method
+    HTTP Method
+    .PARAMETER Endpoint
+    Endpoint to call
+    .PARAMETER Body
+    Request Body
+    .PARAMETER Version
+    Version of the API to call
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding()]
     param(
         [parameter(Mandatory = $true, Position = 0)][ValidateSet('Default', 'Delete', 'Get', 'Head', 'Merge', 'Options', 'Patch', 'Post', 'Put', 'Trace')][string]$Method,
@@ -10,7 +28,7 @@ function Invoke-MsGRequest {
     )
     BEGIN {
 
-        # https://learn.microsoft.com/en-us/graph/query-parameters?tabs=http - Look into later for additiona parameters.
+        # https://learn.microsoft.com/en-us/graph/query-parameters?tabs=http - Look into later for additional parameters.
 
         # Session Checks
         if ([string]::IsNullOrEmpty($Headers) -and [string]::IsNullOrEmpty($Jwt)) {

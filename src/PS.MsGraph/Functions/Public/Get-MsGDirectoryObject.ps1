@@ -1,4 +1,16 @@
 function Get-MsGDirectoryObject {
+    <#
+    .SYNOPSIS
+    Retrieves properties of a directory object.
+    .DESCRIPTION
+    This function retrieves the properties of a specified directory object.
+    .PARAMETER ObjectId
+    ObjectId of the directory object.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][Alias('ObjectId')][string]$Id,

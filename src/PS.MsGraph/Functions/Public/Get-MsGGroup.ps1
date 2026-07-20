@@ -1,4 +1,26 @@
 function Get-MsGGroup {
+    <#
+    .SYNOPSIS
+    Retrieves properties of groups.
+    .DESCRIPTION
+    This function retrieves the properties of groups.
+    .PARAMETER DisplayName
+    DisplayName of the group.
+    .PARAMETER AppId
+    AppId of the group.
+    .PARAMETER ObjectId
+    ObjectId of the group.
+    .PARAMETER Filter
+    Filter string for retrieving groups by property values.
+    .PARAMETER AdvancedQuery
+    To use when querying using an advanced filter.
+    .PARAMETER All
+    To retrieve all available groups from Entra ID.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

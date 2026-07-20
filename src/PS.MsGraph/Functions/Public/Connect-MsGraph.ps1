@@ -1,4 +1,28 @@
 function Connect-MsGraph {
+    <#
+    .SYNOPSIS
+    Retrieves an access token from the specified Entra ID resource and sets it as a session variable.
+    .DESCRIPTION
+    This functions retrieves an access token from Entra ID for a specified resource using a given authentication mechanism and sets it as a session variable to be used in the functions tied to this module. This can be used for user-based interactive authentication or for principal-based non-interactive authentication.
+    .PARAMETER ServicePrincipalCredential
+    Credential object containing client id and secret for service principal.
+    .PARAMETER ClientId
+    Client id of service principal to authenticate to.
+    .PARAMETER ClientSecret
+    Client secret of service principal to authenticate to.
+    .PARAMETER Thumbprint
+    Thumbprint of private key certificate in specified certificate store tied to an app registration to authenticate to.
+    .PARAMETER CertificateStore
+    Certificate store holding the private key certificate to authenticate with.
+    .PARAMETER ResourceName
+    Name of the resource to authenticate to Entra ID for. Maps to resource url in the function.
+    .PARAMETER Scopes
+    Scopes to authenticate to the resource for.
+    .PARAMETER ResourceUrl
+    Url of the resource to authenticate to Entra ID for.
+    .PARAMETER TenantId
+    Id/name of the tenant to authenticate to.
+    #>
     [CmdletBinding()]
     [Alias('csmg')]
     param(
@@ -27,8 +51,7 @@ function Connect-MsGraph {
         [string[]]$Scopes = ('User.Read'),
 
         [parameter(Mandatory = $false)][string]$ResourceUrl = 'https://graph.microsoft.com',
-        [parameter(Mandatory = $true)][string]$TenantId,
-        [parameter(Mandatory = $false)][switch]$AsHeaders
+        [parameter(Mandatory = $true)][string]$TenantId
     )
     BEGIN {
         # Retrieve ResourceUrl if not present.

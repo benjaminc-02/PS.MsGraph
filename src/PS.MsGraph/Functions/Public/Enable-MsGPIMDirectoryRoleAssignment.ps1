@@ -1,4 +1,28 @@
 function Enable-MsGPIMDirectoryRoleAssignment {
+    <#
+    .SYNOPSIS
+    Actives self PIM role assignment for a specified role.
+    .DESCRIPTION
+    This function activates a self PIM role assignemnt for a given role for the signed-in user. The justification and timeframe can be provided.
+    .PARAMETER RoleDefinitionName
+    Name of the role.
+    .PARAMETER RoleDefinitionId
+    Id of the role.
+    .PARAMETER Justification
+    Justification for elevating access.
+    .PARAMETER Hours
+    Timeframe that the assignment is active for.
+    .PARAMETER DirectoryScopeId
+    Scope id for where to activate the assignment.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Enable-MsGPIMDirectoryRoleAssignment -RoleDefinitionName 'Global Administrator' -Justification 'Updating conditional access.'
+
+    Activates the 'Global Administrator' role for the signed in user to perform the specified actions.
+    #>
     [CmdletBinding()]
     [Alias('epim')]
     param(

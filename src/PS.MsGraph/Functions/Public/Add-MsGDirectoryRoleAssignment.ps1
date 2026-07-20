@@ -1,4 +1,16 @@
 function Add-MsGDirectoryRoleAssignment {
+    <#
+    .SYNOPSIS
+
+    .DESCRIPTION
+
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS>
+    #>
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$RoleDefinitionName,

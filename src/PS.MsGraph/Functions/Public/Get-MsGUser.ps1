@@ -1,4 +1,22 @@
 function Get-MsGUser {
+    <#
+    .SYNOPSIS
+    Retrieves properties of users.
+    .DESCRIPTION
+    This function retrieves the properties of users.
+    .PARAMETER UserPrincipalName
+    UserPrincipalName or ObjectId of the user.
+    .PARAMETER Filter
+    Filter string for retrieving users by property values.
+    .PARAMETER AdvancedQuery
+    To use when querying using an advanced filter.
+    .PARAMETER All
+    To retrieve all available users from Entra ID.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(DefaultParameterSetName = 'UserName')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'UserName', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]

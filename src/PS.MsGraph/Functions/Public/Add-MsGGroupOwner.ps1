@@ -1,4 +1,26 @@
 function Add-MsGGroupOwner {
+    <#
+    .SYNOPSIS
+    Adds an owner to a group in Entra ID.
+    .DESCRIPTION
+    This function adds a specified owner to the group in Entra ID.
+    .PARAMETER DisplayName
+    Display Name of the group.
+    .PARAMETER ObjectId
+    Object Id of the group.
+    .PARAMETER UserPrincipalName
+    The UserPrincipalName of the user to add as an owner to the group.
+    .PARAMETER DirectoryObjectId
+    The Directory Object Id of the principal to add as an owner to the group.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Add-MsGGroupOwner -DisplayName TestGroup -UserPrincipalName benjamin.cohn@testdomain.com
+
+    Adds the specified user as an owner to the group.
+    #>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

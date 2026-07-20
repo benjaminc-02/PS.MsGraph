@@ -1,4 +1,18 @@
 function Get-MsGDirectoryObjectMemberOf {
+    <#
+    .SYNOPSIS
+    Retrieves the group memberships of a directory object.
+    .DESCRIPTION
+    This function retrieves the group memberships of a specified directory object.
+    .PARAMETER Id
+    ObjectId of the directory object.
+    .PARAMETER SecurityEnabledOnly
+    Determines whether only security groups should be retrieved or if all groups should be returned.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][Alias('ObjectId')][string]$Id,

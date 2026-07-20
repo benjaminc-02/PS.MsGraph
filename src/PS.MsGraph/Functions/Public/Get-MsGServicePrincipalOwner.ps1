@@ -1,4 +1,20 @@
 function Get-MsGServicePrincipalOwner {
+    <#
+    .SYNOPSIS
+    Retrieves owners of a service principal.
+    .DESCRIPTION
+    This function retrieves the owner principals of a specified service principal.
+    .PARAMETER DisplayName
+    DisplayName of the service principal.
+    .PARAMETER AppId
+    AppId of the service principal.
+    .PARAMETER ObjectId
+    ObjectId of the service principal.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

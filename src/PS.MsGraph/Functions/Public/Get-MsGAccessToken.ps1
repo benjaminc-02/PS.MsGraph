@@ -1,4 +1,30 @@
 function Get-MsGAccessToken {
+    <#
+    .SYNOPSIS
+    Retrieves an access token from the specified Entra ID resource.
+    .DESCRIPTION
+    This functions retrieves an access token from Entra ID for a specified resource using a given authentication mechanism. This can be used for user-based interactive authentication or for principal-based non-interactive authentication.
+    .PARAMETER ServicePrincipalCredential
+    Credential object containing client id and secret for service principal.
+    .PARAMETER ClientId
+    Client id of service principal to authenticate to.
+    .PARAMETER ClientSecret
+    Client secret of service principal to authenticate to.
+    .PARAMETER Thumbprint
+    Thumbprint of private key certificate in specified certificate store tied to an app registration to authenticate to.
+    .PARAMETER CertificateStore
+    Certificate store holding the private key certificate to authenticate with.
+    .PARAMETER ResourceName
+    Name of the resource to authenticate to Entra ID for. Maps to resource url in the function.
+    .PARAMETER Scopes
+    Scopes to authenticate to the resource for.
+    .PARAMETER ResourceUrl
+    Url of the resource to authenticate to Entra ID for.
+    .PARAMETER TenantId
+    Id/name of the tenant to authenticate to.
+    .PARAMETER AsHeaders
+    Returns the token as headers instead of as a Jwt.
+    #>
     [CmdletBinding(DefaultParameterSetName = 'UserAccount')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'ClientSecretCredential')]

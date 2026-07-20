@@ -1,4 +1,30 @@
 function Add-MsGApplicationCertificate {
+    <#
+    .SYNOPSIS
+    Adds a specified certificate to an app registration in Entra ID.
+    .DESCRIPTION
+    This function adds a specified certificate to an app registration in Entra ID, allowing it to be used for authentication.
+    .PARAMETER DisplayName
+    Display Name of the app registration.
+    .PARAMETER AppId
+    App/Client Id of the app registration.
+    .PARAMETER ObjectId
+    Object Id of the app registration.
+    .PARAMETER Path
+    Path of the public key certificate.
+    .PARAMETER StoreLocation
+    Certificate Store location of a stored certificate.
+    .PARAMETER Thumbprint
+    Thumbprint of the certificate in the stored location.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Add-MsGApplicationCertificate -DisplayName TestApp-01 -Path C:\temp\TestApp-01.cer
+
+    Adds the specified certificate as an authentication certificate to the app registration.
+    #>
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name-Path', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]

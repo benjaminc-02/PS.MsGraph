@@ -1,4 +1,24 @@
 function Get-MsGAdministrativeUnit {
+    <#
+    .SYNOPSIS
+    Retrieves properties of administrative units.
+    .DESCRIPTION
+    This function retrieves the properties of adminsitrative units.
+    .PARAMETER DisplayName
+    DisplayName of the administrative unit.
+    .PARAMETER ObjectId
+    ObjectId of the administrative unit.
+    .PARAMETER Filter
+    Filter string for retrieving administrative units by property values.
+    .PARAMETER AdvancedQuery
+    To use when querying using an advanced filter.
+    .PARAMETER All
+    To retrieve all available administrative units from Entra ID.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

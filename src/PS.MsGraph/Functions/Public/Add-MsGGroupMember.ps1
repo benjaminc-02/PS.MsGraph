@@ -1,4 +1,26 @@
 function Add-MsGGroupMember {
+    <#
+    .SYNOPSIS
+    Adds a member to a group in Entra ID.
+    .DESCRIPTION
+    This function adds a specified member to the group in Entra ID.
+    .PARAMETER DisplayName
+    Display Name of the group.
+    .PARAMETER ObjectId
+    Object Id of the group.
+    .PARAMETER UserPrincipalName
+    The UserPrincipalName of the user to add as a member to the group.
+    .PARAMETER DirectoryObjectId
+    The Directory Object Id of the principal to add as a member to the group.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Add-MsGGroupMember -DisplayName TestGroup -UserPrincipalName benjamin.cohn@testdomain.com
+
+    Adds the specified user as a member to the group.
+    #>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

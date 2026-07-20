@@ -1,4 +1,28 @@
 function Add-MsGApplicationOwner {
+    <#
+    .SYNOPSIS
+    Adds an owner to an app registration in Entra ID.
+    .DESCRIPTION
+    This function adds a specified owner to the app registration in Entra ID.
+    .PARAMETER DisplayName
+    Display Name of the app registration.
+    .PARAMETER AppId
+    App/Client Id of the app registration.
+    .PARAMETER ObjectId
+    Object Id of the app registration.
+    .PARAMETER UserPrincipalName
+    The UserPrincipalName of the user to add as an owner to the application.
+    .PARAMETER DirectoryObjectId
+    The Directory Object Id of the principal to add as an owner to the application.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Add-MsGApplicationOwner -DisplayName TestApp-01 -UserPrincipalName benjamin.cohn@testdomain.com
+
+    Adds the specified user as an owner to the app registration.
+    #>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

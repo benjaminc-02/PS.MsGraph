@@ -1,4 +1,26 @@
 function Get-MsGApplication {
+    <#
+    .SYNOPSIS
+    Retrieves properties of app registrations.
+    .DESCRIPTION
+    This function retrieves the properties of app registrations.
+    .PARAMETER DisplayName
+    DisplayName of the app registration.
+    .PARAMETER AppId
+    AppId of the app registration.
+    .PARAMETER ObjectId
+    ObjectId of the app registration.
+    .PARAMETER Filter
+    Filter string for retrieving app registrations by property values.
+    .PARAMETER AdvancedQuery
+    To use when querying using an advanced filter.
+    .PARAMETER All
+    To retrieve all available app registrations from Entra ID.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

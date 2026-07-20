@@ -1,4 +1,18 @@
 function Get-MsGGroupOwner {
+    <#
+    .SYNOPSIS
+    Retrieves owners of a group.
+    .DESCRIPTION
+    This function retrieves the owner principals of a specified group.
+    .PARAMETER DisplayName
+    DisplayName of the group.
+    .PARAMETER ObjectId
+    ObjectId of the group.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

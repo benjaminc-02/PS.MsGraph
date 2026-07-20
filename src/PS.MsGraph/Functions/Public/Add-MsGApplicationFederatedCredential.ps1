@@ -1,4 +1,34 @@
 function Add-MsGApplicationFederatedCredential {
+    <#
+    .SYNOPSIS
+    Adds a specified federated credential to an app registration in Entra ID.
+    .DESCRIPTION
+    This function adds a specified federated identity credential to an app registration in Entra ID, allowing for external OIDC identity providers to authentication to the application.
+    .PARAMETER DisplayName
+    Display Name of the app registration.
+    .PARAMETER AppId
+    App/Client Id of the app registration.
+    .PARAMETER ObjectId
+    Object Id of the app registration.
+    .PARAMETER FCName
+    Name of the federated credential.
+    .PARAMETER Issuer
+    The URL of the external identity provider. Must match the issuer claim of the external token being exchanged.
+    .PARAMETER Subject
+    The identifier of the external software workload within the external identity provider. Like the audience value, it has no fixed format, as each IdP uses their own - sometimes a GUID, sometimes a colon delimited identifier, sometimes arbitrary strings. The value here must match the sub claim within the token presented to Microsoft Entra ID.
+    .PARAMETER ClaimsMatchingExpression
+    Enables the use of claims matching expressions against specified claims.
+    .PARAMETER Audience
+    The audience that can appear in the external token.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Add-MsGApplicationFederatedCredential -DisplayName TestApp-01 -FCName FlexCred-Test -Issuer https://app.terraform.io -Subject 'organization:test-org:project:test-proj:workspace:test-workspace:run_phase:plan'
+
+    Adds the specified federated identity credential for the specified issuer and subject.
+    #>
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name-Subject', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]

@@ -1,4 +1,20 @@
 function Get-MsGApplicationFederatedCredential {
+    <#
+    .SYNOPSIS
+    Retrieves federated credentials of app registrations.
+    .DESCRIPTION
+    This function retrieves the federated identity credentials of a specified app registration.
+    .PARAMETER DisplayName
+    DisplayName of the app registration.
+    .PARAMETER AppId
+    AppId of the app registration.
+    .PARAMETER ObjectId
+    ObjectId of the app registration.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

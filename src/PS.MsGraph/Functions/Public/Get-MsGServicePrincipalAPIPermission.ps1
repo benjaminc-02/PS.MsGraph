@@ -1,4 +1,20 @@
 function Get-MsGServicePrincipalAPIPermission {
+    <#
+    .SYNOPSIS
+    Retrieves API permissions of service principals.
+    .DESCRIPTION
+    This function retrieves the API permissions of a specified service principal.
+    .PARAMETER DisplayName
+    DisplayName of the service principal.
+    .PARAMETER AppId
+    AppId of the service principal.
+    .PARAMETER ObjectId
+    ObjectId of the service principal.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding()]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

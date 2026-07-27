@@ -1,0 +1,53 @@
+name: Merge to Main
+
+on:
+    push:
+        branches:
+            - main
+    workflow_dispatch:
+
+jobs:
+    update-help:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            pull-requests: write
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+
+            - name: Install Modules
+              shell: pwsh
+              run: |
+                  Install-Module -Name platyPS -Force -Scope CurrentUser
+
+            - name: Import Modules
+              shell: pwsh
+              run: |
+                  Import-Module -Name "./src/PS.MsGraph/PS.MsGraph.psd1" -Force
+
+            - name: Update Markdown
+              shell: pwsh
+              run: |
+                  New-MarkdownHelp -Module PS.MsGraph -OutputFolder "./docs/" -Force
+
+            - name: Generate XML Help
+              shell: pwsh
+              run: |
+                  New-ExternalHelp -Path "./docs" -OutputPath "./src/PS.MsGraph" -Force
+
+            - name: Commit and Push Help Updates
+              shell: pwsh
+              run: |
+                  git config user.email "github-actions@github.com"
+                  git config user.name "GitHub Actions"
+                  git fetch origin ${{ github.head_ref }}
+                  git checkout ${{ github.head_ref }}
+                  git add .
+                  if (!(git diff --cached --quiet)) {
+                    git commit -m "Update Help Documentation"
+                    git push origin ${{ github.head_ref }}
+                  } else {
+                    Write-Host "No changes to help file"
+                  }
+              continue-on-error: true

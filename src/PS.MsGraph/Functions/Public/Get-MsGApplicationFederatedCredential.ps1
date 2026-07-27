@@ -14,6 +14,10 @@ function Get-MsGApplicationFederatedCredential {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Get-MsGApplicationFederatedCredential -DisplayName TestApp-01
+
+    Retrieves the federated identity credentials tied to the TestApp-01 app registration.
     #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(

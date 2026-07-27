@@ -14,6 +14,10 @@ function Get-MsGApplicationPassword {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Get-MsGApplicationPassword -DisplayName TestApp-01
+
+    Retrieves the properties for client secrets tied to the TestApp-01 app registration.
     #>
     [CmdletBinding()]
     param(

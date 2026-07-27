@@ -12,10 +12,17 @@ function Remove-MsGApplicationFederatedCredential {
     Object Id of the app registration.
     .PARAMETER FCId
     ID of the federated credential.
+    .PARAMETER Force
+    Bypasses the confirmation check.
     .PARAMETER Headers
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+
+    .EXAMPLE
+    PS> Remove-MsGApplicationFederatedCredential -DisplayName TestApp-01 -FCId 4398daf5-3f3d-4ed7-b705-b954df66682b -Force
+
+    Removes the federated identity credential that is tied to id "4398daf5-3f3d-4ed7-b705-b954df66682b".
     #>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Name')]
     param(
@@ -91,7 +98,7 @@ function Remove-MsGApplicationFederatedCredential {
         # end region
 
         # Remove federated credential
-        if (($PSCmdlet.ShouldProcess($application.displayName, 'Remove Application Federated Credential')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove '$FCId' from '$($application.displayName)'.", 'Are you sure you would like to proceed?')))) {
+        if (($PSCmdlet.ShouldProcess($application.displayName, 'Remove Application Federated Credential')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove '$FCId' from '$($application.displayName)'.", 'Are you sure you want to proceed?')))) {
             try {
                 Invoke-MsGRequest -Method Delete -Endpoint $appFedCredEndpoint -Body $body -Headers $Headers -ErrorAction 'Stop' > $null
             }

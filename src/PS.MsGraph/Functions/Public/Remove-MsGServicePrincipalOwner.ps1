@@ -14,10 +14,16 @@ function Remove-MsGServicePrincipalOwner {
     The UserPrincipalName of the user to remove as an owner from the service principal.
     .PARAMETER DirectoryObjectId
     The Directory Object Id of the principal to remove as an owner from the service principal.
+    .PARAMETER Force
+    Bypasses the confirmation check.
     .PARAMETER Headers
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Remove-MsGServicePrincipalOwner -DisplayName TestApp-01 -UserPrincipalName benjamin.cohn@testdomain.com -Force
+
+    Removes the user "benjamin.cohn@testdomain.com" as an owner from the TestApp-01 service principal.
     #>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Name')]
     param(
@@ -96,7 +102,7 @@ function Remove-MsGServicePrincipalOwner {
 
         # Remove Owners
         foreach ($ownerId in $ownerIDsToRemove) {
-            if (($PSCmdlet.ShouldProcess($ownerId, 'Remove Service Principal Owner')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove '$ownerId' as an owner from '$($servicePrincipal.displayName)'.", 'Are you sure you would like to proceed?')))) {
+            if (($PSCmdlet.ShouldProcess($ownerId, 'Remove Service Principal Owner')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove '$ownerId' as an owner from '$($servicePrincipal.displayName)'.", 'Are you sure you want to proceed?')))) {
                 $appOwnerEndpoint = 'servicePrincipals/{0}/owners/{1}/$ref' -f $servicePrincipal.id, $ownerId
                 try {
                     Invoke-MsGRequest -Method Delete -Endpoint $appOwnerEndpoint -Body $body @irmParams > $null

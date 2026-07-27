@@ -12,10 +12,16 @@ function Remove-MsGApplicationPassword {
     Object Id of the app registration.
     .PARAMETER KeyId
     ID of the password/client secret.
+    .PARAMETER Force
+    Bypasses the confirmation check.
     .PARAMETER Headers
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Remove-MsGApplicationPassword -DisplayName TestApp-01 -KeyId 1b983071-cadb-4430-ba6d-82d5e0f51039
+
+    Removes the "1b983071-cadb-4430-ba6d-82d5e0f51039" secret from the TestApp-01 app registration.
     #>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Name')]
     param(
@@ -82,7 +88,7 @@ function Remove-MsGApplicationPassword {
         # end region
 
         # Remove application password
-        if (($PSCmdlet.ShouldProcess($application.displayName, 'Remove Application Password')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove '$KeyId' from '$($application.displayName)'.", 'Are you sure you would like to proceed?')))) {
+        if (($PSCmdlet.ShouldProcess($application.displayName, 'Remove Application Password')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove '$KeyId' from '$($application.displayName)'.", 'Are you sure you want to proceed?')))) {
             try {
                 $endpoint = 'applications/{0}/removePassword' -f $application.id
                 $body = @{

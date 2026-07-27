@@ -12,6 +12,10 @@ function Get-MsGUserAuthMethod {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Get-MsGUserAuthMethod -UserPrincipalName benjamin.cohn@testdomain.com -AuthMethod MSAuthApp
+
+    Retrieves all auth methods for benjamin.cohn@testdomain.com that are from the Microsoft Authenticator app.
     #>
     [CmdletBinding()]
     param(

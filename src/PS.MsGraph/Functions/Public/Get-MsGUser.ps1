@@ -16,6 +16,10 @@ function Get-MsGUser {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Get-MsGUser -UserPrincipalName benjamin.cohn@testdomain.com
+
+    Retrieves properties and details for the user "benjamin.cohn@testdomain.com".
     #>
     [CmdletBinding(DefaultParameterSetName = 'UserName')]
     param(

@@ -12,10 +12,16 @@ function Remove-MsGApplicationCertificate {
     Object Id of the app registration.
     .PARAMETER Thumbprint
     Thumbprint of the certificate on the app registration.
+    .PARAMETER Force
+    Bypasses the confirmation check.
     .PARAMETER Headers
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Remove-MsGApplicationCertificate -DisplayName TestApp-01 -Thumbprint A909502DD82AE41433E6F83886B00D4277A32A7B -Force
+
+    This will remove the "A909502DD82AE41433E6F83886B00D4277A32A7B" thumbprint from the TestApp-01 app registration.
     #>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Name')]
     param(
@@ -92,7 +98,7 @@ function Remove-MsGApplicationCertificate {
         # end region
 
         # Update application
-        if (($PSCmdlet.ShouldProcess($application.displayName, 'Remove Application Certificate')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove '$Thumbprint' from '$($application.displayName)'.", 'Are you sure you would like to proceed?')))) {
+        if (($PSCmdlet.ShouldProcess($application.displayName, 'Remove Application Certificate')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove '$Thumbprint' from '$($application.displayName)'.", 'Are you sure you want to proceed?')))) {
             try {
                 $endpoint = 'applications/{0}' -f $application.id
                 $body = @{

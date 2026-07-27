@@ -14,6 +14,10 @@ function Get-MsGServicePrincipalAPIPermission {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Get-MsGServicePrincipalAPIPermission -DisplayName TestApp-01
+
+    Retrieves the API permissions tied to the TestApp-01 service principal.
     #>
     [CmdletBinding()]
     param(

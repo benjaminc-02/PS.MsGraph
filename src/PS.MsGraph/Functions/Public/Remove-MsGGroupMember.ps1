@@ -12,10 +12,16 @@ function Remove-MsGGroupMember {
     The UserPrincipalName of the user to remove from the group.
     .PARAMETER DirectoryObjectId
     The Directory Object Id of the principal to remove from to the group.
+    .PARAMETER Force
+    Bypasses the confirmation check.
     .PARAMETER Headers
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Remove-MsGGroupMember -DisplayName FinanceTeam -UserPrincipalName benjamin.cohn@testdomain.com -Force
+
+    Removes the user "benjamin.cohn@testdomain.com" as a member from the FinanceTeam group.
     #>
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -90,7 +96,7 @@ function Remove-MsGGroupMember {
 
         # Remove Members
         foreach ($memberId in $memberIDsToRemove) {
-            if (($PSCmdlet.ShouldProcess($memberId, 'Remove Group Member')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove '$memberId' as an member from '$($group.displayName)'.", 'Are you sure you would like to proceed?')))) {
+            if (($PSCmdlet.ShouldProcess($memberId, 'Remove Group Member')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove '$memberId' as an member from '$($group.displayName)'.", 'Are you sure you want to proceed?')))) {
                 $memberEndpoint = 'groups/{0}/members/{1}/$ref' -f $group.id, $memberId
                 try {
                     Invoke-MsGRequest -Method Delete -Endpoint $memberEndpoint -Body $body @irmParams > $null

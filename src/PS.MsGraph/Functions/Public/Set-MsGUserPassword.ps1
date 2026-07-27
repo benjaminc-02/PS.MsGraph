@@ -12,6 +12,10 @@ function Set-MsGUserPassword {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Set-MsGUserPassword -UserPrincipalName benjamin.cohn@testdomain.com -NewPassword ('TestPassword01!' | ConvertTo-SecureString -AsPlainText -Force)
+
+    Sets the password for benjamin.cohn@testdomain.com to "TestPassword01!".
     #>
     [CmdletBinding(SupportsShouldProcess)]
     param(

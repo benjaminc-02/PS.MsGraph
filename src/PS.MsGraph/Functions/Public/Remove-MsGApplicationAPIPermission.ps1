@@ -17,7 +17,7 @@ function Remove-MsGApplicationAPIPermission {
     .PARAMETER ResourceAppId
     App/Client Id of the resource application that the permissions are assigned from.
     .PARAMETER Force
-    Forces the addition without any prompts.
+    Bypasses the confirmation check.
     .PARAMETER Headers
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
@@ -138,7 +138,7 @@ function Remove-MsGApplicationAPIPermission {
             }
         }
 
-        if (($PSCmdlet.ShouldProcess(($Permission -join ' '), 'Remove Application API Permission')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove [$ResourceAppId] '$($Permission -join ' ')' $Type-Level permission from '$($application.displayName)'.", 'Are you sure you would like to proceed?')))) {
+        if (($PSCmdlet.ShouldProcess(($Permission -join ' '), 'Remove Application API Permission')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove [$ResourceAppId] '$($Permission -join ' ')' $Type-Level permission from '$($application.displayName)'.", 'Are you sure you want to proceed?')))) {
             try {
                 $endpoint = 'applications/{0}' -f $application.id
                 $body = @{

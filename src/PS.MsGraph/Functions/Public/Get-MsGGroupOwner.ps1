@@ -12,6 +12,10 @@ function Get-MsGGroupOwner {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Get-MsGGroupOwner -DisplayName "FinanceTeam"
+
+    Retrieves the owners of the "FinanceTeam" group.
     #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(

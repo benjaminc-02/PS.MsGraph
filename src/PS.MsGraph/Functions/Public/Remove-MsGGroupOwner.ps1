@@ -12,10 +12,16 @@ function Remove-MsGGroupOwner {
     The UserPrincipalName of the user to remove as owner from the group.
     .PARAMETER DirectoryObjectId
     The Directory Object Id of the principal to remove as owner from to the group.
+    .PARAMETER Force
+    Bypasses the confirmation check.
     .PARAMETER Headers
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Remove-MsGGroupOwner -DisplayName FinanceTeam -UserPrincipalName benjamin.cohn@testdomain.com -Force
+
+    Removes the user "benjamin.cohn@testdomain.com" as an owner from the FinanceTeam group.
     #>
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -90,7 +96,7 @@ function Remove-MsGGroupOwner {
 
         # Remove Owners
         foreach ($ownerId in $ownerIDsToRemove) {
-            if (($PSCmdlet.ShouldProcess($ownerId, 'Remove Group Owner')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove '$ownerId' as an owner from '$($group.displayName)'.", 'Are you sure you would like to proceed?')))) {
+            if (($PSCmdlet.ShouldProcess($ownerId, 'Remove Group Owner')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove '$ownerId' as an owner from '$($group.displayName)'.", 'Are you sure you want to proceed?')))) {
                 $ownerEndpoint = 'groups/{0}/owners/{1}/$ref' -f $group.id, $ownerId
                 try {
                     Invoke-MsGRequest -Method Delete -Endpoint $ownerEndpoint -Body $body @irmParams > $null

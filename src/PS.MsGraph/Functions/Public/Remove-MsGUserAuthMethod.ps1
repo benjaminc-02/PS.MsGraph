@@ -8,10 +8,16 @@ function Remove-MsGUserAuthMethod {
     UserPrincipalName of the user to remove the auth method of.
     .PARAMETER AuthMethodId
     Id of the authentication method of the user to remove.
+    .PARAMETER Force
+    Bypasses the confirmation check.
     .PARAMETER Headers
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Remove-MsGUserAuthMethod -UserPrincipalName benjamin.cohn@testdomain.com -AuthMethodId 36a3e6ef-6465-45b2-b41b-8b0203ab701f -Force
+
+    Removes the "36a3e6ef-6465-45b2-b41b-8b0203ab701f" auth method from benjamin.cohn@testdomain.com.
     #>
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -94,7 +100,7 @@ function Remove-MsGUserAuthMethod {
 
         # Remove auth method
         foreach ($method in $methodsToRemove) {
-            if (($PSCmdlet.ShouldProcess(('{0} [{1}]' -f $method.id, $method.'@odata.type'), 'Remove User Auth Method')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove $('{0} [{1}]' -f $method.id, $method.'@odata.type') authentication method from $UserPrincipalName.", 'Are you sure you would like to proceed?')))) {
+            if (($PSCmdlet.ShouldProcess(('{0} [{1}]' -f $method.id, $method.'@odata.type'), 'Remove User Auth Method')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove $('{0} [{1}]' -f $method.id, $method.'@odata.type') authentication method from $UserPrincipalName.", 'Are you sure you want to proceed?')))) {
                 try {
                     $baseEndpoint = $odataTypeTable[$method.'@odata.type'.Split('.')[-1]]
                     $endpoint = 'users/{0}/{1}/{2}' -f $user.id, $baseEndpoint, $method.id

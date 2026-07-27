@@ -10,6 +10,10 @@ function Get-MsGDirectoryObject {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Get-MsGDirectoryObject -Id 36af72f2-a273-45e6-9acf-ad6dcfdfc585
+
+    Retrieves properties for the directory object '36af72f2-a273-45e6-9acf-ad6dcfdfc585'.
     #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(

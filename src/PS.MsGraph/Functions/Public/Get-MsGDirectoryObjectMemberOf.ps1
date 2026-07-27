@@ -12,6 +12,14 @@ function Get-MsGDirectoryObjectMemberOf {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Get-MsGUser benjamin.cohn@testdomain.com | Get-MsGDirectoryObjectMemberOf
+
+    Retrieves the group memberships for benjamin.cohn@testdomain.com.
+    .EXAMPLE
+    PS> Get-MsGServicePrincipal TestApp-01 | Get-MsGDirectoryObjectMemberOf
+
+    Retrieves the group memberships for TestApp-01.
     #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(

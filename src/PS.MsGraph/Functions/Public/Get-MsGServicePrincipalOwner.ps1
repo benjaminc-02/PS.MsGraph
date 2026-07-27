@@ -14,6 +14,10 @@ function Get-MsGServicePrincipalOwner {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Get-MsGServicePrincipalOwner -DisplayName TestApp-01
+
+    Retrieves the owners for the TestApp-01 service principal.
     #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(

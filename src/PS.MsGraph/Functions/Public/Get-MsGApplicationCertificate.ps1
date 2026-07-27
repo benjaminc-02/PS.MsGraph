@@ -14,6 +14,10 @@ function Get-MsGApplicationCertificate {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Get-MsGApplicationCertificate -DisplayName TestApp-01
+
+    Retrieves the authentication certificates tied to the TestApp-01 app registration.
     #>
     [CmdletBinding()]
     param(

@@ -14,6 +14,10 @@ function Get-MsGApplicationAPIPermission {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Get-MsGApplicationAPIPermission -DisplayName TestApp-01
+
+    Retrieves the API permissions tied to the TestApp-01 app registration.
     #>
     [CmdletBinding()]
     param(

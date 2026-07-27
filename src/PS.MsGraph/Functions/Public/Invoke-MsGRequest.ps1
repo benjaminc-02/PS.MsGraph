@@ -16,6 +16,10 @@ function Invoke-MsGRequest {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Invoke-MsGRequest -Method Get -Endpoint 'applications?$filter=displayName eq "TestApp-01"'
+
+    Invokes the 'applications' endpoint to retrieve apps that are named "TestApp-01".
     #>
     [CmdletBinding()]
     param(

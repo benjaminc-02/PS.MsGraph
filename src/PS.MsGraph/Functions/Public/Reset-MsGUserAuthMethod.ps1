@@ -6,10 +6,16 @@ function Reset-MsGUserAuthMethod {
     This function triggers a reset of a user's authentication methods in Entra ID. This mimics the "Require re-register multifactor authentication" button in the Entra portal.
     .PARAMETER UserPrincipalName
     UserPrincipalName of the user to remove the auth method of.
+    .PARAMETER Force
+    Bypasses the confirmation check.
     .PARAMETER Headers
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Reset-MsGUserAuthMethod -UserPrincipalName benjamin.cohn@testdomain.com -Force
+
+    This will remove all secondary authentication methods for the user that are not Windows Hello for Business or Platform Credentials.
     #>
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -82,7 +88,7 @@ function Reset-MsGUserAuthMethod {
         # end region
 
         # Remove each auth method.
-        if (($PSCmdlet.ShouldProcess($user.userPrincipalName, 'Reset User Auth Method')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Reset all $($user.userPrincipalName) MFA methods [$($methodsToRemove | Measure-Object | Select-Object -ExpandProperty 'Count')].", 'Are you sure you would like to proceed?')))) {
+        if (($PSCmdlet.ShouldProcess($user.userPrincipalName, 'Reset User Auth Method')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Reset all $($user.userPrincipalName) MFA methods [$($methodsToRemove | Measure-Object | Select-Object -ExpandProperty 'Count')].", 'Are you sure you want to proceed?')))) {
             foreach ($method in $methodsToRemove) {
                 try {
                     Remove-MsGUserAuthMethod -UserPrincipalName $user.userPrincipalName -AuthMethodId $method.id -Force @irmParams

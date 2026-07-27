@@ -14,6 +14,10 @@ function Get-MsGApplicationOwner {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Get-MsGApplicationOwner -DisplayName TestApp-01
+
+    Retrieves the owners for the TestApp-01 app registration.
     #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(

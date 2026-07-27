@@ -20,6 +20,10 @@ function Get-MsGApplication {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Get-MsGApplication -DisplayName TestApp-01
+
+    Retrieves the properties and details of the TestApp-01 app registration.
     #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(

@@ -20,6 +20,10 @@ function Add-MsGDirectoryRoleAssignment {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Add-MsGDirectoryRoleAssignment -RoleDefinitionName "Global Administrator" -UserPrincipalName benjamin.cohn@testdomain.com
+
+    Assigns the "Global Administrator" role to benjamin.cohn@testdomain.com.
     #>
     [CmdletBinding(SupportsShouldProcess)]
     param(

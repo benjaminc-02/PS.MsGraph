@@ -20,6 +20,10 @@ function Get-MsGServicePrincipal {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Get-MsGServicePrincipal -DisplayName TestApp-01
+
+    Retrieves the properties and details of the TestApp-01 service principal.
     #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(

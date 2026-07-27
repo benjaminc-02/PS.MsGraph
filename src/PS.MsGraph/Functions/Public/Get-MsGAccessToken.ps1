@@ -24,6 +24,22 @@ function Get-MsGAccessToken {
     Id/name of the tenant to authenticate to.
     .PARAMETER AsHeaders
     Returns the token as headers instead of as a Jwt.
+    .EXAMPLE
+    PS> Get-MsGAccessToken -TenantId testdomain.onmicrosoft.com
+
+    Triggers an interactive user sign-in through MSAL to authenticate to Entra ID and retrieve a jwt.
+    .EXAMPLE
+    PS> Get-MsGAccessToken -TenantId testdomain.onmicrosoft.com -ServicePrincipalCredential $AppCredential
+
+    Authenticates to Entra ID using the Client Id and Secret Credential from $AppCredential.
+    .EXAMPLE
+    PS> Get-MsGAccessToken -TenantId testdomain.onmicrosoft.com -ClientId aeca5cf4-4738-4e32-b0d9-030d9b5b4297 -ClientSecret -gx8Q~_H1GPUygPDGJl4D.otjdReVx-x0KnvnaGF
+
+    Authenticates to Entra ID using the provided client id and secret.
+    .EXAMPLE
+    PS> Get-MsGAccessToken -TenantId testdomain.onmicrosoft.com -ClientId aeca5cf4-4738-4e32-b0d9-030d9b5b4297 -Thumbprint 'A909502DD82AE41433E6F83886B00D4277A32A7B' -CertificateStore 'CurrentUser'
+
+    Authenticates to Entra ID using the provided client id and certificate from the current user store with the "A909502DD82AE41433E6F83886B00D4277A32A7B" thumbprint.
     #>
     [CmdletBinding(DefaultParameterSetName = 'UserAccount')]
     param(

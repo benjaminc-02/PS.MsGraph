@@ -18,6 +18,10 @@ function Get-MsGAdministrativeUnit {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Get-MsGAdministrativeUnit -DisplayName "Finance"
+
+    Retrieves properties for the "Finance" administrative unit.
     #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(

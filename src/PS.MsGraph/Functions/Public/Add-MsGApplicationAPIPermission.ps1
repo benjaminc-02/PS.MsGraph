@@ -19,7 +19,7 @@ function Add-MsGApplicationAPIPermission {
     .PARAMETER ResourceAppId
     App/Client Id of the resource application that the permissions are assigned from.
     .PARAMETER Force
-    Forces the addition without any prompts.
+    Bypasses the confirmation check.
     .PARAMETER Headers
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
@@ -228,7 +228,7 @@ function Add-MsGApplicationAPIPermission {
             # end region
 
             # Apply admin consent
-            if ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Provide admin consent to the following permissions on the '$($servicePrincipal.displayName)' app: $($Permission -join ', ').", "Are you sure you would like to proceed with the following?"))) {
+            if ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Provide admin consent to the following permissions on the '$($servicePrincipal.displayName)' app: $($Permission -join ', ').", "Are you sure you want to proceed?"))) {
                 try {
                     Add-MsGServicePrincipalAPIPermission -ObjectId $servicePrincipal.id -Permission $Permission -Type $Type -ResourceAppId $resourceApp.appId -Force -Headers $Headers -ErrorAction 'Stop'
                 }

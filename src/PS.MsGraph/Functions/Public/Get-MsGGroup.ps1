@@ -20,6 +20,10 @@ function Get-MsGGroup {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Get-MsGGroup -DisplayName "FinanceTeam"
+
+    Retrieves the properties of the "FinanceTeam" group.
     #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(

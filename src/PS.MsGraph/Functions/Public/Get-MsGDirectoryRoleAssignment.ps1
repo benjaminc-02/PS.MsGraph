@@ -14,6 +14,10 @@ function Get-MsGDirectoryRoleAssignment {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Get-MsGDirectoryRoleAssignment -DisplayName "Global Administrator"
+
+    Retrieves principals that are assigned "Global Administrator".
     #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(

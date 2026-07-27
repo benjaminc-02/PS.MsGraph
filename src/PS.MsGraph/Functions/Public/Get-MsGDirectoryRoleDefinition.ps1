@@ -14,6 +14,10 @@ function Get-MsGDirectoryRoleDefinition {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Get-MsGDirectoryRoleDefinition -DisplayName "Global Administrator"
+
+    Retrieves the properties for the "Global Administrator" role in Entra ID.
     #>
     [CmdletBinding(DefaultParameterSetName = 'Name')]
     param(

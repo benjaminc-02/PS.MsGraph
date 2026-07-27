@@ -17,11 +17,15 @@ function Remove-MsGServicePrincipalAPIPermission {
     .PARAMETER ResourceAppId
     App/Client Id of the resource application that the permissions are assigned from.
     .PARAMETER Force
-    Forces the removal without any prompts.
+    Bypasses the confirmation check.
     .PARAMETER Headers
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Remove-MsGServicePrincipalAPIPermission -DisplayName TestApp-01 -Permission User.Read.All -Type Application -Force
+
+    This removes the User.Read.All Application API Permission for Microsoft Graph from the TestApp-01 service principal.
     #>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Name')]
     param(
@@ -112,7 +116,7 @@ function Remove-MsGServicePrincipalAPIPermission {
                         continue
                     }
 
-                    if (($PSCmdlet.ShouldProcess($SpecifiedPermission, 'Remove Service Principal API Permission')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove [$ResourceAppId] '$SpecifiedPermission' $Type-Level permission from '$($servicePrincipal.displayName)'.", 'Are you sure you would like to proceed?')))) {
+                    if (($PSCmdlet.ShouldProcess($SpecifiedPermission, 'Remove Service Principal API Permission')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove [$ResourceAppId] '$SpecifiedPermission' $Type-Level permission from '$($servicePrincipal.displayName)'.", 'Are you sure you want to proceed?')))) {
                         try {
                             $permissionEndpoint = 'servicePrincipals/{0}/appRoleAssignments/{1}' -f $servicePrincipal.id, $permissionInfo.id
                             Invoke-MsGRequest -Method Delete -Endpoint $permissionEndpoint @irmParams
@@ -145,7 +149,7 @@ function Remove-MsGServicePrincipalAPIPermission {
                         }
 
                         # Update permission list if permissions still remain. Otherwise delete the delegation grants.
-                        if (($PSCmdlet.ShouldProcess(($Permission -join ' '), 'Remove Service Principal API Permission')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove [$ResourceAppId] '$($Permission -join ' ')' $Type-Level permission from '$($servicePrincipal.displayName)'.", 'Are you sure you would like to proceed?')))) {
+                        if (($PSCmdlet.ShouldProcess(($Permission -join ' '), 'Remove Service Principal API Permission')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove [$ResourceAppId] '$($Permission -join ' ')' $Type-Level permission from '$($servicePrincipal.displayName)'.", 'Are you sure you want to proceed?')))) {
                             if ($permissionScopeList.Count -gt 0) {
                                 $scopeString = $permissionScopeList -join ' '
                                 $permissionUpdateBody = @{'scope' = $scopeString }

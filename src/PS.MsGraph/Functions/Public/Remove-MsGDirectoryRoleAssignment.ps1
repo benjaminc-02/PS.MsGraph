@@ -16,10 +16,16 @@ function Remove-MsGDirectoryRoleAssignment {
     GroupName of the group to remove from the role.
     .PARAMETER DirectoryObjectId
     ObjectId of the principal to remove from the role.
+    .PARAMETER Force
+    Bypasses the confirmation check.
     .PARAMETER Headers
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Remove-MsGDirectoryRoleAssignment -RoleDefinitionName "Global Administrator" -UserPrincipalName benjamin.cohn@testdomain.com -Force
+
+    This will remove "benjamin.cohn@testdomain.com" as a "Global Administrator" in the tenant.
     #>
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -150,7 +156,7 @@ function Remove-MsGDirectoryRoleAssignment {
             $endpoint = 'roleManagement/directory/roleAssignments/{0}' -f $member.roleAssignmentId
             $memberId = $member.id
             $memberDisplayName = $member.displayName
-            if (($PSCmdlet.ShouldProcess(('{0} [{1}]' -f $memberDisplayName, $memberId), 'Remove Directory Role Assignment')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove $('{0} [{1}]' -f $memberDisplayName, $memberId) from the $($roleDefinition.displayName) role in Entra ID.", 'Are you sure you would like to proceed?')))) {
+            if (($PSCmdlet.ShouldProcess(('{0} [{1}]' -f $memberDisplayName, $memberId), 'Remove Directory Role Assignment')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove $('{0} [{1}]' -f $memberDisplayName, $memberId) from the $($roleDefinition.displayName) role in Entra ID.", 'Are you sure you want to proceed?')))) {
                 try {
                     Invoke-MsGRequest -Method Delete -Endpoint $endpoint @irmParams > $null
                 }

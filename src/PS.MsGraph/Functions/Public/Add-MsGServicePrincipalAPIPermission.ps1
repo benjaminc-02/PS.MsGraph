@@ -17,7 +17,7 @@ function Add-MsGServicePrincipalAPIPermission {
     .PARAMETER ResourceAppId
     App/Client Id of the resource application that the permissions are assigned from.
     .PARAMETER Force
-    Forces the addition without any prompts.
+    Bypasses the confirmation check.
     .PARAMETER Headers
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
@@ -122,7 +122,7 @@ function Add-MsGServicePrincipalAPIPermission {
                     }
 
                     # Assign permission to service principal if it exists.
-                    if ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Add the '$SpecifiedPermission' Application permission to '$($servicePrincipal.displayName)'.", "Are you sure you would like to proceed with the following?"))) {
+                    if ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Add the '$SpecifiedPermission' Application permission to '$($servicePrincipal.displayName)'.", "Are you sure you want to proceed?"))) {
                         try {
                             Invoke-MsGRequest -Method Post -Endpoint $appRoleAssignToEndpoint -Body $permissionBody -Headers $Headers -ErrorAction 'Stop'
                         }
@@ -168,7 +168,7 @@ function Add-MsGServicePrincipalAPIPermission {
                         'scope'       = $scopeString
                     }
                     $endpoint = 'oauth2PermissionGrants'
-                    if ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Consent to the following delegated permissions to the '$($servicePrincipal.displayName)' service principal: $scopeString.", "Are you sure you would like to proceed with the following?"))) {
+                    if ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Consent to the following delegated permissions to the '$($servicePrincipal.displayName)' service principal: $scopeString.", "Are you sure you want to proceed?"))) {
                         try {
                             Invoke-MsGRequest -Method Post -Endpoint $endpoint -Body $oauth2PermissionBody -Headers $Headers -ErrorAction 'Stop'
                         }
@@ -185,7 +185,7 @@ function Add-MsGServicePrincipalAPIPermission {
                     $scopeString = ($validPermissions | Sort-Object | Select-Object -Unique) -join ' '
 
                     # Update existing oauth2 permission grants.
-                    if ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Update the scopes for '$($servicePrincipal.displayName)' from '$($oauth2PermissionGrants.scope.Trim())' to '$scopeString'.", "Are you sure you would like to proceed with the following?"))) {
+                    if ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Update the scopes for '$($servicePrincipal.displayName)' from '$($oauth2PermissionGrants.scope.Trim())' to '$scopeString'.", "Are you sure you want to proceed?"))) {
                         try {
                             $endpoint = 'oauth2PermissionGrants/{0}' -f $oauth2PermissionGrants.id
                             $body = @{'scope' = $scopeString }

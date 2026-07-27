@@ -16,6 +16,19 @@ function New-MsGApplicationPassword {
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> New-MsGApplicationPassword -DisplayName TestApp-01 -DaysTillExpiration 365
+
+    @odata.context      : https://graph.microsoft.com/v1.0/$metadata#microsoft.graph.passwordCredential
+    customKeyIdentifier :
+    displayName         : Password uploaded on Mon Jul 27 2026
+    endDateTime         : 7/27/2027 2:43:04 PM
+    hint                : -gx
+    keyId               : b9192cec-a784-4cc3-babe-067df0dab412
+    secretText          : -gx8Q~_H1GPUygPDGJl4D.otjdReVx-x0KnvnaGF
+    startDateTime       : 7/27/2026 2:43:04 PM
+
+    Creates a brand new application password for the TestApp-01 app registration.
     #>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Name')]
     param(

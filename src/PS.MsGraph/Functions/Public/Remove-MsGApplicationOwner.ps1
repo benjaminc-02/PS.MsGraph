@@ -14,10 +14,16 @@ function Remove-MsGApplicationOwner {
     The UserPrincipalName of the user to remove as an owner from the application.
     .PARAMETER DirectoryObjectId
     The Directory Object Id of the principal to remove as an owner from the application.
+    .PARAMETER Force
+    Bypasses the confirmation check.
     .PARAMETER Headers
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
+    .EXAMPLE
+    PS> Remove-MsGApplicationOwner -DisplayName TestApp-01 -UserPrincipalName benjamin.cohn@testdomain.com -Force
+
+    Removes the user "benjamin.cohn@testdomain.com" as an owner from the TestApp-01 app registration.
     #>
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -96,7 +102,7 @@ function Remove-MsGApplicationOwner {
 
         # Remove Owners
         foreach ($ownerId in $ownerIDsToRemove) {
-            if (($PSCmdlet.ShouldProcess($ownerId, 'Remove Application Owner')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove '$ownerId' as an owner from '$($application.displayName)'.", 'Are you sure you would like to proceed?')))) {
+            if (($PSCmdlet.ShouldProcess($ownerId, 'Remove Application Owner')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove '$ownerId' as an owner from '$($application.displayName)'.", 'Are you sure you want to proceed?')))) {
                 $appOwnerEndpoint = 'applications/{0}/owners/{1}/$ref' -f $application.id, $ownerId
                 try {
                     Invoke-MsGRequest -Method Delete -Endpoint $appOwnerEndpoint -Body $body @irmParams > $null

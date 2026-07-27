@@ -1,15 +1,25 @@
 function Add-MsGDirectoryRoleAssignment {
     <#
     .SYNOPSIS
-
+    Adds a member to a role in Entra ID.
     .DESCRIPTION
-
+    This function adds a given member to a specified role in Entra ID.
+    .PARAMETER RoleDefinitionName
+    Name of the role to add the principal to.
+    .PARAMETER RoleDefinitionId
+    ID of the role to add the principal to.
+    .PARAMETER DirectoryScopeId
+    Scope of the role to add the principal to.
+    .PARAMETER UserPrincipalName
+    UserPrincipalName of the user to add to the role.
+    .PARAMETER GroupName
+    GroupName of the group to add to the role. Needs to be able to be assigned.
+    .PARAMETER DirectoryObjectId
+    ObjectId of the principal to add to the role.
     .PARAMETER Headers
     Authentication Headers to connect to Microsoft Graph.
     .PARAMETER Jwt
     Jwt to connect to Microsoft Graph.
-    .EXAMPLE
-    PS>
     #>
     [CmdletBinding(SupportsShouldProcess)]
     param(

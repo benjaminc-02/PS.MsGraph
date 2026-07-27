@@ -1,4 +1,18 @@
 function Set-MsGUserPassword {
+    <#
+    .SYNOPSIS
+    Sets the password for a user in Entra ID.
+    .DESCRIPTION
+    This function sets the password for a given user in Entra ID to a provided value.
+    .PARAMETER UserPrincipalName
+    UserPrincipalName of the user to set the password of.
+    .PARAMETER NewPassword
+    New password for the user.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][Alias('UserId')][string]$UserPrincipalName,
@@ -62,7 +76,7 @@ function Set-MsGUserPassword {
         if ($PSCmdlet.ShouldProcess($user.userPrincipalName, 'Set User Password')) {
             try {
                 $endpoint = 'users/{0}' -f $user.id
-                Invoke-MsGRequest -Method Patch -Endpoint $endpoint -Body $body @irmParams
+                Invoke-MsGRequest -Method Patch -Endpoint $endpoint -Body $body @irmParams > $null
             }
             catch {
                 $errorMessage = Get-MsGErrorMessage $_

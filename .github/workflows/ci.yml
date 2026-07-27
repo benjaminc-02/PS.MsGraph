@@ -19,7 +19,7 @@ jobs:
       - name: Test-ModuleManifest
         shell: pwsh
         run: |
-          Test-ModuleManifest -Path ./src/PS.MsGraph/PS.MsGraph.psd1
+          Test-ModuleManifest -Path ./src/PS.MsGraph.psd1
 
       - name: Invoke-ScriptAnalyzer
         shell: pwsh
@@ -31,4 +31,4 @@ jobs:
         env:
           PSGalleryApiKey: ${{ secrets.PSGALLERY_API_KEY }}
         run: |
-          Publish-Module -Path './src/PS.MsGraph' -Repository PSGallery -NuGetApiKey $env:PSGalleryApiKey -WhatIf -Verbose
+          Publish-Module -Path './src' -Repository PSGallery -NuGetApiKey $env:PSGalleryApiKey -WhatIf -Verbose

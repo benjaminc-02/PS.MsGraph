@@ -1,11 +1,28 @@
-function Remove-MsGApplicationCertificate {
+function New-MsGApplicationPassword {
+    <#
+    .SYNOPSIS
+    Create new application password.
+    .DESCRIPTION
+    This function creates a new application password/client secret for a given app registration..
+    .PARAMETER DisplayName
+    Display Name of the app registration.
+    .PARAMETER AppId
+    App/Client Id of the app registration.
+    .PARAMETER ObjectId
+    Object Id of the app registration.
+    .PARAMETER DaysTillExpiration
+    Days till the password expires.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,
         [parameter(Mandatory = $true, ParameterSetName = 'AppId', Position = 1)][string]$AppId,
         [parameter(Mandatory = $true, ParameterSetName = 'ObjId', Position = 2)][string]$ObjectId,
-        [parameter(Mandatory = $true, Position = 3)][string]$Thumbprint,
-        [parameter(Mandatory = $false)][switch]$Force,
+        [parameter(Mandatory = $false, Position = 3)][ValidateRange(1, 730)][int]$DaysTillExpiration = 365,
         [parameter(Mandatory = $false)][hashtable]$Headers,
         [parameter(Mandatory = $false)][string]$Jwt
     )
@@ -34,13 +51,13 @@ function Remove-MsGApplicationCertificate {
         try {
             switch ($PSCmdlet.ParameterSetName) {
                 "Name" {
-                    $appEndpoint = "applications?`$filter=displayName eq '{0}'&`$select=displayName,appId,id,keyCredentials" -f $DisplayName
+                    $appEndpoint = "applications?`$filter=displayName eq '{0}'" -f $DisplayName
                 }
                 "AppId" {
-                    $appEndpoint = "applications?`$filter=appId eq '{0}'&`$select=displayName,appId,id,keyCredentials" -f $AppId
+                    $appEndpoint = "applications?`$filter=appId eq '{0}'" -f $AppId
                 }
                 "ObjId" {
-                    $appEndpoint = "applications/{0}?`$select=displayName,appId,id,keyCredentials" -f $ObjectId
+                    $appEndpoint = "applications/{0}" -f $ObjectId
                 }
             }
             $application = Invoke-MsGRequest -Method Get -Endpoint $appEndpoint -Headers $Headers -ErrorAction 'Stop'
@@ -56,37 +73,32 @@ function Remove-MsGApplicationCertificate {
         }
         # end region
 
-        # Remove Certificate
-        try {
-            if ($application.keyCredentials.customKeyIdentifier -contains $Thumbprint) {
-                $updatedKeyCredentials = $application.keyCredentials | Where-Object { $_.customKeyIdentifier -ne $Thumbprint }
+        # Format body
+        $bodyParams = @{
+            'Method'      = 'Post'
+            'Endpoint'    = 'applications/{0}/addPassword' -f $application.id
+            'Headers'     = $Headers
+            'ErrorAction' = 'Stop'
+            'Body'        = @{
+                'passwordCredential' = @{
+                    'displayName' = 'Password uploaded on {0}' -f (Get-Date).ToString('ddd MMM dd yyyy')
+                    'endDateTime' = (Get-Date).AddDays($DaysTillExpiration).ToString('o')
+                }
             }
-            else {
-                $errorException = '{0} is not tied to the application.' -f $Thumbprint
-                throw $errorException
-            }
-        }
-        catch {
-            $errorMessage = Get-MsGErrorMessage $_
-            $errorException = '{0} : Unable to remove certificate from the application key credentials. Error: {1}' -f $MyInvocation.MyCommand.Name, $errorMessage
-            throw $errorException
         }
         # end region
 
-        # Update application
-        if (($PSCmdlet.ShouldProcess($application.displayName, 'Remove Application Certificate')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove '$Thumbprint' from '$($application.displayName)'.", 'Are you sure you would like to proceed?')))) {
+        # Create Federated Credential
+        if ($PSCmdlet.ShouldProcess($application.displayName, 'New Application Password')) {
             try {
-                $endpoint = 'applications/{0}' -f $application.id
-                $body = @{
-                    'keyCredentials' = $updatedKeyCredentials
-                }
-                Invoke-MsGRequest -Method Patch -Endpoint $endpoint -Body $body -Headers $Headers -ErrorAction 'Stop' > $null
+                $irmResponse = Invoke-MsGRequest @bodyParams
             }
             catch {
                 $errorMessage = Get-MsGErrorMessage $_
-                $errorException = '{0} : Unable to remove certificate from the application in Entra ID. Error: {1}' -f $MyInvocation.MyCommand.Name, $errorMessage
+                $errorException = '{0} : Unable to add federated credential to the application in Entra ID. Error: {1}' -f $MyInvocation.MyCommand.Name, $errorMessage
                 throw $errorException
             }
+            Write-Output $irmResponse
         }
         # end region
     }

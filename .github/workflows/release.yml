@@ -47,7 +47,7 @@ jobs:
         env:
           MODULE_VERSION: ${{ steps.version.outputs.module_version }}
         run: |
-          $manifestPath = Join-Path $PWD './src/PS.MsGraph/PS.MsGraph.psd1'
+          $manifestPath = Join-Path $PWD './src/PS.MsGraph.psd1'
           Update-ModuleManifest -Path $manifestPath -ModuleVersion $env:MODULE_VERSION -ErrorAction Stop
 
           $manifest = Test-ModuleManifest -Path $manifestPath -ErrorAction Stop
@@ -59,4 +59,4 @@ jobs:
         shell: pwsh
         env:
           PSGalleryApiKey: ${{ secrets.PSGALLERY_API_KEY }}
-        run: Publish-Module -Path './src/PS.MsGraph' -Repository PSGallery -NuGetApiKey $env:PSGalleryApiKey
+        run: Publish-Module -Path './src' -Repository PSGallery -NuGetApiKey $env:PSGalleryApiKey

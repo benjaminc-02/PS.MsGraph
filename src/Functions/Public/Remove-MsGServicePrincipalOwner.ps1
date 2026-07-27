@@ -1,5 +1,25 @@
-function Remove-MsGApplicationOwner {
-    [CmdletBinding(SupportsShouldProcess)]
+function Remove-MsGServicePrincipalOwner {
+    <#
+    .SYNOPSIS
+    Removes a specified owner from a service principal in Entra ID.
+    .DESCRIPTION
+    This function removes a specified owner from a service principal in Entra ID.
+    .PARAMETER DisplayName
+    Display Name of the service principal.
+    .PARAMETER AppId
+    App/Client Id of the service principal.
+    .PARAMETER ObjectId
+    Object Id of the service principal.
+    .PARAMETER UserPrincipalName
+    The UserPrincipalName of the user to remove as an owner from the service principal.
+    .PARAMETER DirectoryObjectId
+    The Directory Object Id of the principal to remove as an owner from the service principal.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
+    [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,
         [parameter(Mandatory = $true, ParameterSetName = 'AppId', Position = 1)][string]$AppId,
@@ -36,54 +56,54 @@ function Remove-MsGApplicationOwner {
         # end Session Checks
     }
     PROCESS {
-        # Retrieve Application from Entra ID
+        # Retrieve ServicePrincipal from Entra ID
         try {
             switch ($PSCmdlet.ParameterSetName) {
                 "Name" {
-                    $appEndpoint = "applications?`$filter=displayName eq '{0}'" -f $DisplayName
+                    $appEndpoint = "servicePrincipals?`$filter=displayName eq '{0}'" -f $DisplayName
                 }
                 "AppId" {
-                    $appEndpoint = "applications?`$filter=appId eq '{0}'" -f $AppId
+                    $appEndpoint = "servicePrincipals?`$filter=appId eq '{0}'" -f $AppId
                 }
                 "ObjId" {
-                    $appEndpoint = "applications/{0}" -f $ObjectId
+                    $appEndpoint = "servicePrincipals/{0}" -f $ObjectId
                 }
             }
-            $application = Invoke-MsGRequest -Method Get -Endpoint $appEndpoint @irmParams
-            if ([string]::IsNullOrEmpty($application)) {
-                $errorMessage = 'Application not found.'
+            $servicePrincipal = Invoke-MsGRequest -Method Get -Endpoint $appEndpoint @irmParams
+            if ([string]::IsNullOrEmpty($servicePrincipal)) {
+                $errorMessage = 'Service Principal not found.'
                 throw $errorMessage
             }
         }
         catch {
             $errorMessage = Get-MsGErrorMessage $_
-            $errorException = '{0} : Unable to retrieve application from Entra ID. Error: {1}' -f $MyInvocation.MyCommand.Name, $errorMessage
+            $errorException = '{0} : Unable to retrieve service principal from Entra ID. Error: {1}' -f $MyInvocation.MyCommand.Name, $errorMessage
             throw $errorException
         }
         # end region
 
         # Retrieve Owners
         try {
-            $applicationOwners = Get-MsGApplicationOwner -ObjectId $application.id @irmParams
-            $ownerIDsToRemove = $applicationOwners | Where-Object { $_.userPrincipalName -in $UserPrincipalName -or $_.id -in $DirectoryObjectId } | Select-Object -ExpandProperty id
+            $servicePrincipalOwners = Get-MsGServicePrincipalOwner -ObjectId $servicePrincipal.id @irmParams
+            $ownerIDsToRemove = $servicePrincipalOwners | Where-Object { $_.userPrincipalName -in $UserPrincipalName -or $_.id -in $DirectoryObjectId } | Select-Object -ExpandProperty id
         }
         catch {
             $errorMessage = Get-MsGErrorMessage $_
-            $errorException = '{0} : Unable to validate application owners from Entra ID. Error: {1}' -f $MyInvocation.MyCommand.Name, $errorMessage
+            $errorException = '{0} : Unable to validate service principal owners from Entra ID. Error: {1}' -f $MyInvocation.MyCommand.Name, $errorMessage
             throw $errorException
         }
         # end region
 
         # Remove Owners
         foreach ($ownerId in $ownerIDsToRemove) {
-            if (($PSCmdlet.ShouldProcess($ownerId, 'Remove Application Owner')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove '$ownerId' as an owner from '$($application.displayName)'.", 'Are you sure you would like to proceed?')))) {
-                $appOwnerEndpoint = 'applications/{0}/owners/{1}/$ref' -f $application.id, $ownerId
+            if (($PSCmdlet.ShouldProcess($ownerId, 'Remove Service Principal Owner')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove '$ownerId' as an owner from '$($servicePrincipal.displayName)'.", 'Are you sure you would like to proceed?')))) {
+                $appOwnerEndpoint = 'servicePrincipals/{0}/owners/{1}/$ref' -f $servicePrincipal.id, $ownerId
                 try {
                     Invoke-MsGRequest -Method Delete -Endpoint $appOwnerEndpoint -Body $body @irmParams > $null
                 }
                 catch {
                     $errorMessage = Get-MsGErrorMessage $_
-                    $errorException = 'Unable to remove {0} as an owner from the application. Error: {1}' -f $ownerId, $errorMessage
+                    $errorException = 'Unable to remove {0} as an owner from the service principal. Error: {1}' -f $ownerId, $errorMessage
                     Write-Error $errorException
                     continue
                 }

@@ -1,4 +1,16 @@
 function Reset-MsGUserAuthMethod {
+    <#
+    .SYNOPSIS
+    Resets the MFA of a user in Entra ID.
+    .DESCRIPTION
+    This function triggers a reset of a user's authentication methods in Entra ID. This mimics the "Require re-register multifactor authentication" button in the Entra portal.
+    .PARAMETER UserPrincipalName
+    UserPrincipalName of the user to remove the auth method of.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][Alias('UserId')][string]$UserPrincipalName,

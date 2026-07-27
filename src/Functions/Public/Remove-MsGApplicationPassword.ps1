@@ -1,10 +1,29 @@
-function New-MsGApplicationPassword {
+function Remove-MsGApplicationPassword {
+    <#
+    .SYNOPSIS
+    Removes a specified password from an app registration in Entra ID.
+    .DESCRIPTION
+    This function removes a specified password/client secret from an app registration in Entra ID.
+    .PARAMETER DisplayName
+    Display Name of the app registration.
+    .PARAMETER AppId
+    App/Client Id of the app registration.
+    .PARAMETER ObjectId
+    Object Id of the app registration.
+    .PARAMETER KeyId
+    ID of the password/client secret.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,
         [parameter(Mandatory = $true, ParameterSetName = 'AppId', Position = 1)][string]$AppId,
         [parameter(Mandatory = $true, ParameterSetName = 'ObjId', Position = 2)][string]$ObjectId,
-        [parameter(Mandatory = $false, Position = 3)][ValidateRange(1, 730)][int]$DaysTillExpiration = 365,
+        [parameter(Mandatory = $true, Position = 3)][string]$KeyId,
+        [parameter(Mandatory = $false)][switch]$Force,
         [parameter(Mandatory = $false)][hashtable]$Headers,
         [parameter(Mandatory = $false)][string]$Jwt
     )
@@ -33,13 +52,13 @@ function New-MsGApplicationPassword {
         try {
             switch ($PSCmdlet.ParameterSetName) {
                 "Name" {
-                    $appEndpoint = "applications?`$filter=displayName eq '{0}'" -f $DisplayName
+                    $appEndpoint = "applications?`$filter=displayName eq '{0}'&`$select=displayName,appId,id,passwordCredentials" -f $DisplayName
                 }
                 "AppId" {
-                    $appEndpoint = "applications?`$filter=appId eq '{0}'" -f $AppId
+                    $appEndpoint = "applications?`$filter=appId eq '{0}'&`$select=displayName,appId,id,passwordCredentials" -f $AppId
                 }
                 "ObjId" {
-                    $appEndpoint = "applications/{0}" -f $ObjectId
+                    $appEndpoint = "applications/{0}?`$select=displayName,appId,id,passwordCredentials" -f $ObjectId
                 }
             }
             $application = Invoke-MsGRequest -Method Get -Endpoint $appEndpoint -Headers $Headers -ErrorAction 'Stop'
@@ -55,32 +74,27 @@ function New-MsGApplicationPassword {
         }
         # end region
 
-        # Format body
-        $bodyParams = @{
-            'Method'      = 'Post'
-            'Endpoint'    = 'applications/{0}/addPassword' -f $application.id
-            'Headers'     = $Headers
-            'ErrorAction' = 'Stop'
-            'Body'        = @{
-                'passwordCredential' = @{
-                    'displayName' = 'Password uploaded on {0}' -f (Get-Date).ToString('ddd MMM dd yyyy')
-                    'endDateTime' = (Get-Date).AddDays($DaysTillExpiration).ToString('o')
-                }
-            }
+        # Validate Credential Exists
+        if ($application.passwordCredentials.keyId -notcontains $KeyId) {
+            $errorException = '{0} : {1} does not exist on the application.' -f $MyInvocation.MyCommand.Name, $KeyId
+            throw $errorException
         }
         # end region
 
-        # Create Federated Credential
-        if ($PSCmdlet.ShouldProcess($application.displayName, 'New Application Password')) {
+        # Remove application password
+        if (($PSCmdlet.ShouldProcess($application.displayName, 'Remove Application Password')) -and ($Force.IsPresent -or ($PSCmdlet.ShouldContinue("Remove '$KeyId' from '$($application.displayName)'.", 'Are you sure you would like to proceed?')))) {
             try {
-                $irmResponse = Invoke-MsGRequest @bodyParams
+                $endpoint = 'applications/{0}/removePassword' -f $application.id
+                $body = @{
+                    'keyId' = $KeyId
+                }
+                Invoke-MsGRequest -Method Post -Endpoint $endpoint -Body $body -Headers $Headers -ErrorAction 'Stop' > $null
             }
             catch {
                 $errorMessage = Get-MsGErrorMessage $_
-                $errorException = '{0} : Unable to add federated credential to the application in Entra ID. Error: {1}' -f $MyInvocation.MyCommand.Name, $errorMessage
+                $errorException = '{0} : Unable to remove certificate from the application in Entra ID. Error: {1}' -f $MyInvocation.MyCommand.Name, $errorMessage
                 throw $errorException
             }
-            Write-Output $irmResponse
         }
         # end region
     }

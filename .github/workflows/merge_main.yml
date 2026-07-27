@@ -21,15 +21,15 @@ jobs:
               run: |
                   Install-Module -Name platyPS -Force -Scope CurrentUser
 
-            - name: Import Modules
-              shell: pwsh
-              run: |
-                  Import-Module -Name "./src/PS.MsGraph/PS.MsGraph.psd1" -Force
+            # - name: Import Modules
+            #   shell: pwsh
+            #   run: |
+            #       Import-Module -Name "./src/PS.MsGraph/PS.MsGraph.psd1" -Force
 
-            - name: Update Markdown
-              shell: pwsh
-              run: |
-                  New-MarkdownHelp -Module PS.MsGraph -OutputFolder "./docs/" -Force
+            # - name: Update Markdown
+            #   shell: pwsh
+            #   run: |
+            #       New-MarkdownHelp -Module PS.MsGraph -OutputFolder "./docs/" -Force
 
             - name: Generate XML Help
               shell: pwsh

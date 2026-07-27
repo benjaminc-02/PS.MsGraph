@@ -1,4 +1,26 @@
 function Remove-MsGDirectoryRoleAssignment {
+    <#
+    .SYNOPSIS
+    Removes a member from a role in Entra ID.
+    .DESCRIPTION
+    This function removes a given member from a specified role in Entra ID.
+    .PARAMETER RoleDefinitionName
+    Name of the role to remove the principal from.
+    .PARAMETER RoleDefinitionId
+    ID of the role to remove the principal from.
+    .PARAMETER DirectoryScopeId
+    Scope of the role to remove the principal from.
+    .PARAMETER UserPrincipalName
+    UserPrincipalName of the user to remove from the role.
+    .PARAMETER GroupName
+    GroupName of the group to remove from the role.
+    .PARAMETER DirectoryObjectId
+    ObjectId of the principal to remove from the role.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$RoleDefinitionName,

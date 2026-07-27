@@ -1,4 +1,22 @@
 function Remove-MsGApplicationCertificate {
+    <#
+    .SYNOPSIS
+    Removes a specified certificate from an app registration in Entra ID.
+    .DESCRIPTION
+    This function removes a specified certificate from an app registration in Entra ID, preventing it from be used for authentication.
+    .PARAMETER DisplayName
+    Display Name of the app registration.
+    .PARAMETER AppId
+    App/Client Id of the app registration.
+    .PARAMETER ObjectId
+    Object Id of the app registration.
+    .PARAMETER Thumbprint
+    Thumbprint of the certificate on the app registration.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

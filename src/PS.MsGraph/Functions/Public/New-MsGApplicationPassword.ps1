@@ -1,4 +1,22 @@
 function New-MsGApplicationPassword {
+    <#
+    .SYNOPSIS
+    Create new application password.
+    .DESCRIPTION
+    This function creates a new application password/client secret for a given app registration..
+    .PARAMETER DisplayName
+    Display Name of the app registration.
+    .PARAMETER AppId
+    App/Client Id of the app registration.
+    .PARAMETER ObjectId
+    Object Id of the app registration.
+    .PARAMETER DaysTillExpiration
+    Days till the password expires.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

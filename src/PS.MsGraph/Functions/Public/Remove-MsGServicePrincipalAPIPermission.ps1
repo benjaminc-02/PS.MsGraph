@@ -1,4 +1,28 @@
 function Remove-MsGServicePrincipalAPIPermission {
+    <#
+    .SYNOPSIS
+    Removes specified API permission from service principal.
+    .DESCRIPTION
+    This function removes specified API permissions from a service principal. Both application and delegated permissions can be removed for any resource application.
+    .PARAMETER DisplayName
+    Display Name of the service principal.
+    .PARAMETER AppId
+    App/Client Id of the service principal.
+    .PARAMETER ObjectId
+    Object Id of the service principal.
+    .PARAMETER Permission
+    List of permissions to remove from the service principal.
+    .PARAMETER Type
+    Type of permissions to remove from the service principal.
+    .PARAMETER ResourceAppId
+    App/Client Id of the resource application that the permissions are assigned from.
+    .PARAMETER Force
+    Forces the removal without any prompts.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

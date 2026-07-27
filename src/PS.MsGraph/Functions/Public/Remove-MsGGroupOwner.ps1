@@ -1,4 +1,22 @@
 function Remove-MsGGroupOwner {
+    <#
+    .SYNOPSIS
+    Removes a owner from a group in Entra ID.
+    .DESCRIPTION
+    This function removes specified owners from the group in Entra ID.
+    .PARAMETER DisplayName
+    Display Name of the group.
+    .PARAMETER ObjectId
+    Object Id of the group.
+    .PARAMETER UserPrincipalName
+    The UserPrincipalName of the user to remove as owner from the group.
+    .PARAMETER DirectoryObjectId
+    The Directory Object Id of the principal to remove as owner from to the group.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

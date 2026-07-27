@@ -1,4 +1,24 @@
 function Remove-MsGServicePrincipalOwner {
+    <#
+    .SYNOPSIS
+    Removes a specified owner from a service principal in Entra ID.
+    .DESCRIPTION
+    This function removes a specified owner from a service principal in Entra ID.
+    .PARAMETER DisplayName
+    Display Name of the service principal.
+    .PARAMETER AppId
+    App/Client Id of the service principal.
+    .PARAMETER ObjectId
+    Object Id of the service principal.
+    .PARAMETER UserPrincipalName
+    The UserPrincipalName of the user to remove as an owner from the service principal.
+    .PARAMETER DirectoryObjectId
+    The Directory Object Id of the principal to remove as an owner from the service principal.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

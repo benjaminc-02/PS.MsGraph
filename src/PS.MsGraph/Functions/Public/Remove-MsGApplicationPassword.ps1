@@ -1,4 +1,22 @@
 function Remove-MsGApplicationPassword {
+    <#
+    .SYNOPSIS
+    Removes a specified password from an app registration in Entra ID.
+    .DESCRIPTION
+    This function removes a specified password/client secret from an app registration in Entra ID.
+    .PARAMETER DisplayName
+    Display Name of the app registration.
+    .PARAMETER AppId
+    App/Client Id of the app registration.
+    .PARAMETER ObjectId
+    Object Id of the app registration.
+    .PARAMETER KeyId
+    ID of the password/client secret.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Name')]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

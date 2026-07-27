@@ -1,4 +1,24 @@
 function Remove-MsGApplicationOwner {
+    <#
+    .SYNOPSIS
+    Removes a specified owner from an app registration in Entra ID.
+    .DESCRIPTION
+    This function removes a specified owner from an app registration in Entra ID.
+    .PARAMETER DisplayName
+    Display Name of the app registration.
+    .PARAMETER AppId
+    App/Client Id of the app registration.
+    .PARAMETER ObjectId
+    Object Id of the app registration.
+    .PARAMETER UserPrincipalName
+    The UserPrincipalName of the user to remove as an owner from the application.
+    .PARAMETER DirectoryObjectId
+    The Directory Object Id of the principal to remove as an owner from the application.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [parameter(Mandatory = $true, ParameterSetName = 'Name', Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][string]$DisplayName,

@@ -1,4 +1,18 @@
 function Remove-MsGUserAuthMethod {
+    <#
+    .SYNOPSIS
+    Removes a specified authentication method from a user in Entra ID.
+    .DESCRIPTION
+    This function will remove a specified authentication method from a user in Entra ID.
+    .PARAMETER UserPrincipalName
+    UserPrincipalName of the user to remove the auth method of.
+    .PARAMETER AuthMethodId
+    Id of the authentication method of the user to remove.
+    .PARAMETER Headers
+    Authentication Headers to connect to Microsoft Graph.
+    .PARAMETER Jwt
+    Jwt to connect to Microsoft Graph.
+    #>
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)][Alias('UserId')][string]$UserPrincipalName,

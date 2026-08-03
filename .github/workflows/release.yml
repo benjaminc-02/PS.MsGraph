@@ -26,7 +26,8 @@ jobs:
           $tagName = $env:TAG_NAME
 
           if ([string]::IsNullOrWhiteSpace($tagName)) {
-            throw 'Could not determine the release tag name from the workflow context.'
+            $errorException = "Could not determine the release tag name from the workflow context."
+            throw $errorException
           }
 
           $moduleVersion = $tagName
@@ -36,7 +37,8 @@ jobs:
 
           $parsedVersion = $null
           if (-not [version]::TryParse($moduleVersion, [ref]$parsedVersion)) {
-            throw "Tag '$tagName' does not map to a valid PowerShell module version. Use tags like '1.2.3' or 'v1.2.3'."
+            $errorException = "Tag '{0}' does not map to the valid PowerShell module version. Use tags like '1.2.3' or 'v1.2.3'." -f $tagName
+            throw $errorException
           }
 
           "tag_name=$tagName" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
@@ -47,16 +49,17 @@ jobs:
         env:
           MODULE_VERSION: ${{ steps.version.outputs.module_version }}
         run: |
-          $manifestPath = Join-Path $PWD './src/PS.MsGraph/PS.MsGraph.psd1'
+          $manifestPath = Join-Path $PWD "./src/PS.MsGraph/PS.MsGraph.psd1"
           Update-ModuleManifest -Path $manifestPath -ModuleVersion $env:MODULE_VERSION -ErrorAction Stop
 
           $manifest = Test-ModuleManifest -Path $manifestPath -ErrorAction Stop
           if ($manifest.Version.ToString() -ne $env:MODULE_VERSION) {
-            throw "Expected manifest version '$($env:MODULE_VERSION)', but found '$($manifest.Version)'."
+            $errorException = "Expected manifest version '{0}', but found '{1}'." -f $env:MODULE_VERSION, $manifest.Version
+            throw $errorException
           }
 
       - name: Publish module to PowerShell Gallery
         shell: pwsh
         env:
           PSGalleryApiKey: ${{ secrets.PSGALLERY_API_KEY }}
-        run: Publish-Module -Path './src/PS.MsGraph' -Repository PSGallery -NuGetApiKey $env:PSGalleryApiKey
+        run: Publish-Module -Path "./src/PS.MsGraph" -Repository PSGallery -NuGetApiKey $env:PSGalleryApiKey

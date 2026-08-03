@@ -103,6 +103,7 @@
         'Get-MsGUserAuthMethod',
         'Invoke-MsGRequest',
         'New-MsGApplicationPassword',
+        'New-MsGGroup.ps1'
         'Remove-MsGApplicationAPIPermission',
         'Remove-MsGApplicationCertificate',
         'Remove-MsGApplicationFederatedCredential',

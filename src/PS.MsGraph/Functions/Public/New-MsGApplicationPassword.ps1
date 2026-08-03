@@ -101,14 +101,14 @@ function New-MsGApplicationPassword {
         }
         # end region
 
-        # Create Federated Credential
+        # Create Application Password
         if ($PSCmdlet.ShouldProcess($application.displayName, 'New Application Password')) {
             try {
                 $irmResponse = Invoke-MsGRequest @bodyParams
             }
             catch {
                 $errorMessage = Get-MsGErrorMessage $_
-                $errorException = '{0} : Unable to add federated credential to the application in Entra ID. Error: {1}' -f $MyInvocation.MyCommand.Name, $errorMessage
+                $errorException = '{0} : Unable to create new application password for the application in Entra ID. Error: {1}' -f $MyInvocation.MyCommand.Name, $errorMessage
                 throw $errorException
             }
             Write-Output $irmResponse

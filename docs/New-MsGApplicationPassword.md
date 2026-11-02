@@ -31,7 +31,7 @@ New-MsGApplicationPassword [-ObjectId] <String> [[-DaysTillExpiration] <Int32>] 
 ```
 
 ## DESCRIPTION
-This function creates a new application password/client secret for a given app registration..
+This function creates a new application password/client secret for a given app registration.
 
 ## EXAMPLES
 

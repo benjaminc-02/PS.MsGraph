@@ -3,7 +3,7 @@ function New-MsGApplicationPassword {
     .SYNOPSIS
     Create new application password.
     .DESCRIPTION
-    This function creates a new application password/client secret for a given app registration..
+    This function creates a new application password/client secret for a given app registration.
     .PARAMETER DisplayName
     Display Name of the app registration.
     .PARAMETER AppId
